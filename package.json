@@ -1,0 +1,33 @@
+{
+  "name": "maple",
+  "version": "0.0.1",
+  "description": "韦少强——毕设",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maple-wsq/maple.git"
+  },
+  "keywords": [
+    "nodeJS@6.0.0",
+    "express",
+    "mongodb",
+    "react",
+    "redis"
+  ],
+  "author": "MapleGu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maple-wsq/maple/issues"
+  },
+  "homepage": "https://github.com/maple-wsq/maple#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "lodash": "^4.11.1",
+    "mongoose": "^4.4.14",
+    "path": "^0.12.7",
+    "webpack": "^1.13.0"
+  }
+}
