@@ -1,0 +1,43 @@
+import React, {Component} from 'react';
+
+class Header extends Component {
+  constructor () {
+    super();
+  }
+
+  render () {
+    return (
+      <header className='header maple-flex'>
+        <div className='maple-header maple-iterm'>
+          <a href='javascript:void 0;'>
+            小区管理系统—后台
+          </a>
+        </div>
+        <div className='maple-user maple-iterm'>
+          <a href='javascript:void 0;'>
+            {this.props.user.name}
+          </a>
+          <i className='fa fa-angle-down maple-icon'></i>
+          <div className='maple-user-show'>
+            <ul>
+              <li>
+                <i className='fa fa-user'></i>
+                <a href='javascript:void 0;'>
+                    &nbsp;&nbsp;&nbsp;修改密码
+                </a>
+              </li>
+              <li>
+                <i className='fa fa-sign-out'></i>
+                <a href='javascript:void 0;'>
+                    &nbsp;&nbsp;&nbsp;注销
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+    );
+  }
+}
+
+export default Header;

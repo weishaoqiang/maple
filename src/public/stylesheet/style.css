@@ -1,0 +1,73 @@
+@charset "UTF-8";
+html {
+  font-size: 20px;
+  color: #666;
+  font-family: Raleway,sans-serif;
+}
+header {
+  box-sizing: border-box;
+}
+a, ul, li {
+  text-decoration: none;
+  list-style: none;
+  color: #666;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+.flex-body {
+  display: flex;
+}
+.maple-flex {
+  line-height:2.5rem;
+  display:flex;
+  justify-content: space-between;
+}
+.header {
+  flex:1;
+  border-bottom: 1px solid #C8C7CC;
+}
+.maple-header {
+  margin-left: 1rem;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+.maple-user {
+  margin-right: 1rem;
+  font-weight: bolder;
+  font-size: 0.8rem;
+  color: blue;
+  position: relative;
+}
+.maple-user:hover{
+  color: rgba(0,122,255,1);
+}
+.maple-user:hover .maple-user-show{
+  display: block;
+}
+.maple-user a:hover{
+  color: rgba(0,122,255,1);
+}
+.maple-user-show {
+  position: absolute;
+  right: -0.5rem;
+  top: 2.0  rem;
+  width: 6rem;
+  border: 1px solid #666;
+  display: none;
+}
+.maple-user-show li {
+  padding:0 10px;
+  line-height: 1.5rem;
+}
+.maple-user-show li:hover {
+  color:rgba(0,122,255,.5);
+}
+/*
+ * 内容主题部分
+*/
+.maple-container {
+  display: flex;
+  flex: 1;
+}

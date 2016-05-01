@@ -1,9 +1,12 @@
 const cors = require('cors')
+const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
 
-const config = require('./config')
-const wbpkconfig = require('../webpack/webpack.config.js');
+const wbpkconfig = require('../webpack/webpack.client.dev.js');
 const node_env = process.env.NODE_ENV || 'development'
 const staticDir = path.join(__dirname, '..', 'public')
 const app = express()
@@ -35,8 +38,8 @@ app.use(require('method-override')('_method'))
 app.use('/', express.static(staticDir));
 app.use(session({
   name: 'maple-session',
-  store: new RedisStore(config.redis),
-  secret: config.sessionSecret,
+  store: new RedisStore(config.base.redis),
+  secret: config.base.sessionSecret,
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false }
@@ -44,6 +47,8 @@ app.use(session({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require('response-time')())
+app.set('views', './view')
+app.set('view engine', 'pug');
 
 //
 // 设置api 路由
@@ -54,16 +59,9 @@ app.use('/v1/api', require('./api'))
 // 由于前端使用spa 所以所有的路由都指向 首页
 // -----------------------------------------------------------------------------
 app.get('*', (req, res, next) => {
-  const statusCode = 200
-  const data = {
-    title: configuration.name,
-    description: configuration.description,
-    // css: 'public/stylesheets/app.css',
-  }
-  res.render('index', {data})
-
+  res.render('index');
 })
 
-app.listen(configuration.port,function () {
-  console.log('Listen on port %s', configuration.port)
+app.listen(config.base.port,function () {
+  console.log('Listen on port %s', config.base.port)
 })

@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const _ = require('lodash')
 
-var connect = mongoose.connect(config.mongodb, function (err) {
+var connect = mongoose.connect(config.base.mongodb, function (err) {
   if (err) {
-    console.error('connect to %s error', config.mongodb, err.message);
+    console.error('connect to %s error', config.base.mongodb, err.message);
     process.exit(1);
   }
 });
