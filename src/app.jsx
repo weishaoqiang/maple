@@ -10,19 +10,24 @@ import './public/stylesheet/style.css'
 class App extends Component {
   constructor () {
     super();
-    this.props = {
-        isLogin: false
-    };
+    this.state = {
+      isLogin: false
+    }
   }
   componentWillMount () {
-    // if (!this.props.isLogin) {
+    if (this.props.location.state) {
+      this.setState(this.props.location.state)
+    } else {
+      this.props.history.push('/login')
+    }
+    // if (this.props.location.state && !this.props.location.state.isLogin) {
     //   this.props.history.push('/login')
     // }
   }
   render () {
     return (
       <div class='flex-body'>
-        <Header className='header' {...this.props.location.state} />
+        <Header className='header' {...this.state} />
         <div class='maple-container' />
       </div>
     )
