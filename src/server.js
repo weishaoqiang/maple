@@ -8,7 +8,6 @@ const RedisStore = require('connect-redis')(session)
 
 const wbpkconfig = require('../webpack/webpack.client.dev.js');
 const node_env = process.env.NODE_ENV || 'development'
-const staticDir = path.join(__dirname, '..', 'public')
 const app = express()
 
 //
@@ -35,7 +34,9 @@ if (node_env === 'development') {
 // -----------------------------------------------------------------------------
 app.use(cors())
 app.use(require('method-override')('_method'))
-app.use('/', express.static(staticDir));
+app.set('views', path.join(__dirname,'view'))
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   name: 'maple-session',
   store: new RedisStore(config.base.redis),
@@ -47,8 +48,6 @@ app.use(session({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require('response-time')())
-app.set('views', './view')
-app.set('view engine', 'pug');
 
 //
 // 设置api 路由
@@ -58,7 +57,7 @@ app.use('/v1/api', require('./api'))
 //
 // 由于前端使用spa 所以所有的路由都指向 首页
 // -----------------------------------------------------------------------------
-app.get('*', (req, res, next) => {
+app.use('*', (req, res, next) => {
   res.render('index');
 })
 

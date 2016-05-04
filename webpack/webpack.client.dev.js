@@ -80,7 +80,7 @@ module.exports = {
     // Multiple entry with hot loader
     // https://github.com/glenjamin/webpack-hot-middleware/blob/master/example/webpack.config.multientry.js
     entry: {
-      app: ['./client', hotMiddlewareScript]
+      app: ['./app.jsx', hotMiddlewareScript]
     },
     output: {
       // The output directory as absolute path
@@ -93,7 +93,7 @@ module.exports = {
     module: {
       loaders: commonLoaders.concat([
         { test: /\.css$/,
-          loader: 'style!css?module&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+          loader: 'style!css!postcss-loader'
         }
       ])
     },

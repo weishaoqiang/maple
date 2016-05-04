@@ -10,12 +10,12 @@ class Header extends Component {
       <header className='header maple-flex'>
         <div className='maple-header maple-iterm'>
           <a href='javascript:void 0;'>
-            小区管理系统—后台
+            小区管理系统
           </a>
         </div>
         <div className='maple-user maple-iterm'>
           <a href='javascript:void 0;'>
-            {this.props.user.name}
+            {this.props.username}
           </a>
           <i className='fa fa-angle-down maple-icon'></i>
           <div className='maple-user-show'>

@@ -30,14 +30,14 @@ ul {
 }
 .maple-header {
   margin-left: 1rem;
-  font-weight: bolder;
-  font-size: 1rem;
+  /*font-weight: bolder;*/
+  font-size: 1.25rem;
 }
 .maple-user {
   margin-right: 1rem;
   font-weight: bolder;
   font-size: 0.8rem;
-  color: blue;
+  color: rgba(0,122,255,1);
   position: relative;
 }
 .maple-user:hover{
