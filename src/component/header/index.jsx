@@ -28,7 +28,7 @@ class Header extends Component {
               </li>
               <li>
                 <i className='fa fa-sign-out'></i>
-                <a href='javascript:void 0;'>
+                <a href='/v1/api/signout'>
                     &nbsp;&nbsp;&nbsp;注销
                 </a>
               </li>

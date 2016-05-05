@@ -10,6 +10,7 @@ class Login extends Component {
       warning: '',
     }
   }
+
   login () {
     // console.log(this.refs.username.value)
     var username = this.refs.username.value;
@@ -25,10 +26,9 @@ class Login extends Component {
         warning
       });
       if (response.data.status === 0) {
-        that.props.history.push({
-          pathname: '/',
-          state: response.data
-        })
+        let data = JSON.stringify(response.data);
+        localStorage.setItem('user', data)
+        that.props.history.push('/')
       }
     })
     .catch(function (response) {
@@ -54,7 +54,7 @@ class Login extends Component {
                 <i className='fa fa-key'></i>
               </div>
               <div className='login-line'>
-                <Link to='/'>忘记密码啦？</Link>
+                <Link to='update_password'>忘记密码啦？</Link>
                 <button onClick={this.login.bind(this)}>登陆</button>
               </div>
           </div>

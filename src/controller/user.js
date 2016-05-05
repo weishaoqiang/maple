@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const uuid = require('node-uuid');
+const sendMail = require('../common/sendMail').sendResetPassMail
 // 用户注册
 module.exports.signup = function (req, res) {
   // 超级管理员注册用户
@@ -34,23 +36,79 @@ module.exports.signin = function (req, res, next) {
   let username = req.body.username
   query.or([{ email }, { username }])
   query.exec().then(function (user) {
-    bcrypt.compare(req.body.password, user.password, function (err, status) {
-      if (err || !status) {
-        res.send({
-          status: 1,
-          message: '密码或用户名错误'
-        });
-      } else {
-        console.log(status)
-        res.send({
-          status: 0,
-          message: '登陆成功',
-          username,
-          email,
-          role: user.role,
-          isLogin: true
-        })
-      }
-    })
+    if(user) {
+      bcrypt.compare(req.body.password, user.password, function (err, status) {
+        if (err || !status) {
+          res.send({
+            status: 1,
+            message: '密码或用户名错误'
+          });
+        } else {
+          req.session.user = {
+            id : user.id,
+            name: user.name,
+            role: user.role,
+            email: '1260302891'
+          }
+          res.cookie('username', user.name);
+          res.send({
+            status: 0,
+            message: '登陆成功',
+            username: user.name,
+            email: user.email,
+            role: user.role,
+            isLogin: true
+          })
+        }
+      })
+    } else {
+      res.send({
+        status: 1,
+        message: '没有此用户'
+      });
+    }
+
+  })
+}
+
+// 注销登陆
+module.exports.signout = function (req, res) {
+  req.session.destroy();
+  res.clearCookie('maple-session', { path: '/' });
+  res.clearCookie('username');
+  res.redirect('/login');
+}
+
+module.exports.getEmailCode = function (req, res) {
+  let token = uuid.v4()
+  let username = req.body.username
+  models.User.findOne({}).then(function (user) {
+    console.log(user)
+    if (!user) {
+      res.send({
+        status: 1,
+        message: '没有此用户'
+      });
+    } else {
+      console.log('sdsfsfsfsd')
+      console.log(user.email)
+      console.log(token)
+      console.log(user.name)
+      sendMail(user.email, token, user.name, function(err) {
+        if (err) {
+          console.log(err)
+          res.send({
+            status: 1,
+            message: '发送失败'
+          });
+        } else {
+          res.send({
+            status: 0,
+            message: '发送成功'
+          });
+        }
+      } )
+      console.log('sdsfsfsfsd')
+    }
   })
 }

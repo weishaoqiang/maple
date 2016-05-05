@@ -4,25 +4,31 @@ import { Router, Route, Link } from 'react-router'
 import { browserHistory } from 'react-router'
 import Header from './component/Header'
 import Login from './component/Login/index.jsx'
+import UpdatePassword from './component/UpdatePassword'
 import 'normalize.css/normalize.css'
 import './public/stylesheet/style.css'
 
+var getCookie = function (sKey) {
+    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+}
+
 class App extends Component {
   constructor () {
-    super();
+    super()
     this.state = {
       isLogin: false
     }
   }
   componentWillMount () {
-    if (this.props.location.state) {
-      this.setState(this.props.location.state)
+    let user = getCookie('username')
+    if (user) {
+      this.setState({
+        username: user,
+        isLogin: true
+      })
     } else {
       this.props.history.push('/login')
     }
-    // if (this.props.location.state && !this.props.location.state.isLogin) {
-    //   this.props.history.push('/login')
-    // }
   }
   render () {
     return (
@@ -34,12 +40,13 @@ class App extends Component {
   }
 }
 
-
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
     </Route>
     <Route path="/login" component={Login}>
+    </Route>
+    <Route path="/update_password" component={UpdatePassword}>
     </Route>
   </Router>
 ), document.getElementById('app'))

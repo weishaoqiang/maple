@@ -4,6 +4,10 @@ const express = require('express')
 const webpack = require('webpack')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+// const renderToString = require('react-dom').server
+// const match = require('react-router').match
+// const RoutingContext = require('react-router').RoutingContext
+// const routes = require()
 const RedisStore = require('connect-redis')(session)
 
 const wbpkconfig = require('../webpack/webpack.client.dev.js');
