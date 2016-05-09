@@ -1,16 +1,28 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router'
+import { Link,browserHistory } from 'react-router'
 // import './index.css'
+var getCookie = function (sKey) {
+    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+}
 
 class UpdatePassword extends Component {
   constructor () {
     super()
     this.state = {
       warning: '',
+      user: ''
     }
   }
 
+  componentWillMount () {
+    let user = getCookie('username')
+    if (user) {
+       this.setState({
+         user
+       })
+    }
+  }
   update () {
     // console.log(this.refs.username.value)
     var username = this.refs.username.value;
@@ -30,7 +42,7 @@ class UpdatePassword extends Component {
       if (response.data.status === 0) {
         let data = JSON.stringify(response.data);
         localStorage.setItem('user', data)
-        that.props.history.push('/')
+        browserHistory.push('/')
       }
     })
     .catch(function (response) {
@@ -81,7 +93,7 @@ class UpdatePassword extends Component {
           <div className='login-body'>
               <div className='login-line warning'>{this.state.warning}</div>
               <div className='login-line'>
-                <input type='text' placeholder='用户名或邮箱' ref="username" />
+                <input type='text' placeholder='用户名或邮箱' ref="username" value={this.state.user} />
                 <i className='fa fa-user'></i>
               </div>
               <div className='login-line'>

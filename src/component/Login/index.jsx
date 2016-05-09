@@ -18,9 +18,8 @@ class Login extends Component {
 
   componentWillMount () {
     let user = getCookie('username')
-    console.log(this)
     if (user) {
-       this.context.router.push('/')
+       browserHistory.push('/')
     }
   }
   login () {
