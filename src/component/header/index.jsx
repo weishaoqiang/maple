@@ -23,7 +23,7 @@ class Header extends Component {
             <ul>
               <li>
                 <i className='fa fa-user'></i>
-                <Link to='update_password'>&nbsp;&nbsp;&nbsp;修改密码</Link>
+                <Link to='/update_password'>&nbsp;&nbsp;&nbsp;修改密码</Link>
               </li>
               <li>
                 <i className='fa fa-sign-out'></i>
