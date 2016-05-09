@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router'
-import './index.css'
+// import './index.css'
 
 class UpdatePassword extends Component {
   constructor () {

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const uuid = require('node-uuid');
+const gen_fuc = require('../common/gen').gen_fuc
 const sendMail = require('../common/sendMail').sendResetPassMail
 // 用户注册
 module.exports.signup = function (req, res) {
@@ -48,7 +48,7 @@ module.exports.signin = function (req, res, next) {
             id : user.id,
             name: user.name,
             role: user.role,
-            email: '1260302891'
+            email: user.email
           }
           res.cookie('username', user.name);
           res.send({
@@ -80,7 +80,7 @@ module.exports.signout = function (req, res) {
 }
 
 module.exports.getEmailCode = function (req, res) {
-  let token = uuid.v4()
+  let token = gen_fuc();
   let username = req.body.username
   models.User.findOne({}).then(function (user) {
     console.log(user)
@@ -90,13 +90,8 @@ module.exports.getEmailCode = function (req, res) {
         message: '没有此用户'
       });
     } else {
-      console.log('sdsfsfsfsd')
-      console.log(user.email)
-      console.log(token)
-      console.log(user.name)
-      sendMail(user.email, token, user.name, function(err) {
+      sendMail(user.email, token, user.name, function(err, message) {
         if (err) {
-          console.log(err)
           res.send({
             status: 1,
             message: '发送失败'
@@ -108,7 +103,6 @@ module.exports.getEmailCode = function (req, res) {
           });
         }
       } )
-      console.log('sdsfsfsfsd')
     }
   })
 }

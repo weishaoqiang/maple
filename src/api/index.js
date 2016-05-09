@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const uuid = require('node-uuid');
 const user = require('../controller/user')
 
 //用户相关api

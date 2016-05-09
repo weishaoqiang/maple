@@ -27,7 +27,7 @@ class App extends Component {
         isLogin: true
       })
     } else {
-      this.props.history.push('/login')
+      this.context.router.push('/login')
     }
   }
   render () {

@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import './index.css'
+
+var getCookie = function (sKey) {
+    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+}
+
 
 class Login extends Component {
   constructor () {
@@ -11,6 +16,13 @@ class Login extends Component {
     }
   }
 
+  componentWillMount () {
+    let user = getCookie('username')
+    console.log(this)
+    if (user) {
+       this.context.router.push('/')
+    }
+  }
   login () {
     // console.log(this.refs.username.value)
     var username = this.refs.username.value;
@@ -26,9 +38,7 @@ class Login extends Component {
         warning
       });
       if (response.data.status === 0) {
-        let data = JSON.stringify(response.data);
-        localStorage.setItem('user', data)
-        that.props.history.push('/')
+        browserHistory.push('/')
       }
     })
     .catch(function (response) {
