@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link, browserHistory } from 'react-router'
 
 class Header extends Component {
   constructor () {
@@ -22,9 +23,7 @@ class Header extends Component {
             <ul>
               <li>
                 <i className='fa fa-user'></i>
-                <a href='javascript:void 0;'>
-                    &nbsp;&nbsp;&nbsp;修改密码
-                </a>
+                <Link to='update_password'>&nbsp;&nbsp;&nbsp;修改密码</Link>
               </li>
               <li>
                 <i className='fa fa-sign-out'></i>
