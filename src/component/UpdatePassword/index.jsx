@@ -11,7 +11,7 @@ class UpdatePassword extends Component {
     super()
     this.state = {
       warning: '',
-      user: ''
+      user: undefined
     }
   }
 
@@ -93,7 +93,7 @@ class UpdatePassword extends Component {
           <div className='login-body'>
               <div className='login-line warning'>{this.state.warning}</div>
               <div className='login-line'>
-                <input type='text' placeholder='用户名或邮箱' ref="username" value={this.state.user} />
+                <input type='text' placeholder='用户名或邮箱' ref="username" value={this.state.user } />
                 <i className='fa fa-user'></i>
               </div>
               <div className='login-line'>
