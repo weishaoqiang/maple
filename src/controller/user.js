@@ -1,30 +1,32 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const validator = require('validator')
 const gen_fuc = require('../common/gen').gen_fuc
 const sendMail = require('../common/sendMail').sendResetPassMail
+const roleControll = require('../common/roleControll')
 // 用户注册
 module.exports.signup = function (req, res) {
-  // 超级管理员注册用户
-  if (req.session.user === 'system') {
+  if (req.session.user && roleControll.createUser.role.includes(req.session.user.role)) {
     if (!req.body.role) {
-      const data = {
-        result: false,
-        data: '没用设置用户角色'
-      }
-      res.send(data)
+      res.send({
+        status: 1,
+        message: '请输入用户角色'
+      })
     }
+  } else {
+    req.body.role = 'resident'
   }
 
   const user = models.User(req.body);
   user.save((err) => {
     if (err) {
       res.send({
-        result: false,
-        data: err
+        status: 1,
+        message: '用户名创建失败，请重试'
       })
     } else {
       res.send({
-        result: true,
-        data:'创建用户成功'
+        status: 0,
+        message:'创建用户成功'
       })
     }
   })
@@ -32,9 +34,15 @@ module.exports.signup = function (req, res) {
 // 用户登录
 module.exports.signin = function (req, res, next) {
   let query = models.User.findOne()
-  let email = req.body.username
-  let username = req.body.username
-  query.or([{ email }, { username }])
+
+  if (validator.isEmail(req.body.username)) {
+    query.where('email').equals(req.body.username)
+  } else if (validator.isMobilePhone(req.body.username, ‘zh-CN’)) {
+    query.where('phone').equals(req.body.username)
+  } else {
+    query.where('username').equals(req.body.username)
+  }
+
   query.exec().then(function (user) {
     if(user) {
       bcrypt.compare(req.body.password, user.password, function (err, status) {
@@ -51,12 +59,10 @@ module.exports.signin = function (req, res, next) {
             email: user.email
           }
           res.cookie('username', user.name);
+          res.cookie('role', user.role);
           res.send({
             status: 0,
             message: '登陆成功',
-            username: user.name,
-            email: user.email,
-            role: user.role,
             isLogin: true
           })
         }
@@ -73,24 +79,25 @@ module.exports.signin = function (req, res, next) {
 
 // 注销登陆
 module.exports.signout = function (req, res) {
-  req.session.destroy();
-  res.clearCookie('maple-session', { path: '/' });
-  res.clearCookie('username');
-  res.redirect('/login');
+  req.session.destroy()
+  res.clearCookie('maple-session', { path: '/' })
+  res.clearCookie('username')
+  res.redirect('/login')
 }
 
+// 发送验证码
 module.exports.getEmailCode = function (req, res) {
-  let token = gen_fuc();
+  let code = gen_fuc()
   let username = req.body.username
-  models.User.findOne({}).then(function (user) {
-    console.log(user)
+  models.User.findOne({username}).then(function (user) {
     if (!user) {
       res.send({
         status: 1,
         message: '没有此用户'
-      });
+      })
     } else {
-      sendMail(user.email, token, user.name, function(err, message) {
+      req.session.code = code
+      sendMail(user.email, code, user.name, function(err, message) {
         if (err) {
           res.send({
             status: 1,
@@ -100,9 +107,237 @@ module.exports.getEmailCode = function (req, res) {
           res.send({
             status: 0,
             message: '发送成功'
-          });
+          })
         }
-      } )
+      })
     }
   })
+}
+
+// 找回密码
+module.exports.updatePassword = function (req, res) {
+  let {code, username, password, passwordConfirmation} = req.body
+
+  if (code != req.session.code) {
+    res.send({message: '验证码验证不匹配'})
+  } else {
+    models.User.findOne({username}).then(function (user) {
+      if (!user) {
+        res.send({
+          status: 1,
+          message: '没有此用户'
+        });
+      } else {
+        user.findPasswordByCode(password, passwordConfirmation, function (err, message) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send(message);
+          }
+        })
+      }
+    })
+  }
+}
+
+// 删除用户
+module.exports.deleteUser = function (req, res) {
+  if (!roleControll.deleteUser.role.includes(req.session.user.role)) {
+    res.send({
+      status: 1,
+      message: '您没有权限'
+    })
+  }
+
+  models.User.findOne({_id: req.body.id}).then(function (user) {
+    if (!user) {
+      res.send({
+        status: 1,
+        message: '没有此用户'
+      })
+    }
+
+    user.update({$set: {destroy: true}}, function (err) {
+      if (err) {
+        res.send({
+          status: 1,
+          message: '删除失败，请重试'
+        })
+      } else {
+        res.send({
+          status: 0,
+          message: '删除成功'
+        })
+      }
+    })
+  })
+}
+
+// 修改用户信息
+module.exports.modifyUser = function (req, res) {
+  if (!req.session.user) {
+    res.send({
+      status: 1,
+      message: '请先登录'
+    })
+  } else if (!roleControll.modifyUser.role.includes(req.session.user.role)) {
+    if (req.body.id) {
+      res.send({
+        status: 1,
+        message: '您没有权限'
+      })
+    }
+  }
+
+  if (req.body.password) {
+    res.send({
+      status: 1,
+      message: '您没有权限修改用户密码'
+    })
+  }
+
+  let userId = req.body.id || req.session.user.id
+  models.User.findOne({_id: userId}).then(function (user) {
+    if (!user) {
+      res.send({
+        status: 1,
+        message: '没有此用户'
+      })
+    }
+
+    user.update({ $set: { req.body } }, function (err) {
+      if (err) {
+        res.send({
+          status: 1,
+          message: '更新失败'
+        })
+      } else {
+        res.send({
+          status: 0,
+          message: '修改成功'
+        })
+      }
+    })
+  })
+}
+
+// 查看用户信息
+module.exports.readUser = function (req, res) {
+  if (!req.session.user) {
+    req.send({
+      status: 1,
+      message: '请先登录'
+    })
+  }
+  if (!roleControll.readUser.role.includes(req.session.user.role)) {
+    if (req.body.id) {
+      req.send({
+        status: 1,
+        message: '您没有权限'
+      })
+    }
+  }
+
+  let userId = req.body.id || req.session.user.id
+  models.User.findOne({_id: userId}).then(function (user) {
+    if (!user) {
+      res.send({
+        status: 1,
+        message: '没有此用户'
+      })
+    }
+    let data = {
+      email: user.email,
+      username: user.username,
+      phone: user.phone,
+      name: user.name,
+      role: user.role
+    }
+    res.send({
+      status: 0,
+      message: data
+    })
+  })
+}
+
+// 获取用户列表
+module.exports.getUserList = function (req, res) {
+  if (!req.session.user) {
+    req.send({
+      status: 1,
+      message: '请先登录'
+    })
+  }
+  if (!roleControll.getUserList.role.includes(req.session.user.role)) {
+    req.send({
+      status: 1,
+      message: '您没有权限'
+    })
+  }
+
+  let query = models.User.find({destroy: false})
+  query.where('role').equals(req.body.role)
+  query.exec().then(function (users) {
+    let length = users.length
+    let data = []
+    for (let i = 0; i < length; i++) {
+      let user = {
+        email: users[i].email,
+        username: users[i].username,
+        phone: user.phone,
+        name: users[i].name,
+        role: users[i].role
+      }
+      data.push(user)
+    }
+    res.send({
+      status: 0,
+      message: data
+    })
+  }
+}
+
+// 查找用户
+module.exports.findUser = function (req, res) {
+  if (!req.session.user) {
+    req.send({
+      status: 1,
+      message: '请先登录'
+    })
+  }
+  if (!roleControll.findUser.role.includes(req.session.user.role)) {
+    req.send({
+      status: 1,
+      message: '您没有权限'
+    })
+  }
+
+  let query = models.User.findOne({destroy: false})
+  if (validator.isEmail(req.body.username)) {
+    query.where('email').equals(req.body.username)
+  } else if (validator.isMobilePhone(req.body.username, ‘zh-CN’)) {
+    query.where('phone').equals(req.body.username)
+  } else {
+    query.where('username').equals(req.body.username)
+  }
+
+  query.exec().then(function (user) {
+    if (!user) {
+      res.send({
+        status: 1,
+        message:
+      })
+    }
+    let data = {
+      email: user.email,
+      username: user.username,
+      phone: user.phone,
+      name: user.name,
+      role: user.role
+    }
+    res.send({
+      status: 0,
+      message: data
+    })
+  }
 }

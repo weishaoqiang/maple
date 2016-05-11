@@ -16,12 +16,6 @@ class Login extends Component {
     }
   }
 
-  componentWillMount () {
-    let user = getCookie('username')
-    if (user) {
-       browserHistory.push('/')
-    }
-  }
   login () {
     // console.log(this.refs.username.value)
     var username = this.refs.username.value;

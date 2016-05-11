@@ -17,9 +17,11 @@ const util = require('util');
 const UserSchema = new Schema({
   email: { type: String, required: '邮箱不能为空', unique: '该邮箱已经被使用' },
   username: { type: String, required: '用户名不能为空', unique: '该用户名已经被使用' },
+  phone: { type: Number, required: '请输入手机号码', unique: '该手机号已被使用' },
   name: { type: String }, //显示名称
   password: { type: String, required: '密码不能为空' },
-  role: { type: String, default: 'residengt' }
+  role: { type: String, default: 'residengt' },
+  destroy: { type: Boolean, default: false }
 });
 
 //
@@ -56,23 +58,6 @@ UserSchema.virtual('passwordConfirmation').get(function (){
   this._passwordConfirmation = pass;
 });
 
-// 登录验证密码方法
-UserSchema.static.authenticate = function (user, password, next) {
-  user = (user || '').toLowerCase;
-  this.findOne({ $or: [{username: user},{email: user}] }).then(function(user) {
-    if (user) {
-      bcrypt.compare(password, user.password, function (err, res) {
-        if (res) {
-          next(null, user);
-        }else {
-          next({message: '用户名或密码不对'});
-        }
-      });
-    } else {
-      next({message: '没有此用户'})
-    }
-  });
-}
 
 // 更新用户密码
 UserSchema.methods.updatePassword = function(currentPassword, password, passwordConfirmation, next) {
@@ -105,6 +90,36 @@ UserSchema.methods.updatePassword = function(currentPassword, password, password
       next({ message: '当前密码不正确' });
     }
   });
+};
+
+// 找回密码
+UserSchema.methods.findPasswordByCode = function(password, passwordConfirmation, next) {
+  var self = this;
+
+  if (!password) {
+    return next({ status: 1, message: '密码不能为空' });
+  }
+
+  if (!passwordConfirmation) {
+    return next({ status: 1, message: '确认密码不能为空' });
+  }
+
+  if ( passwordConfirmation !== password ) {
+    return next({ status: 1, message: '两次密码输入不一致' });
+  }
+
+  bcrypt.hash(password, 10, function(err, hash) {
+    if (err) return cb(err);
+    self.set(password, hash);
+    self.update({$set: { password: hash }},function (err) {
+      if (err) return next(err);
+      next(null, {
+        status: 0,
+        message: '更新成功'
+      });
+    })
+  });
+
 };
 
 // 创建新用户时, 生成加密密码

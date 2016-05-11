@@ -10,8 +10,7 @@ class UpdatePassword extends Component {
   constructor () {
     super()
     this.state = {
-      warning: '',
-      user: undefined
+      warning: ''
     }
   }
 
@@ -24,26 +23,22 @@ class UpdatePassword extends Component {
     }
   }
   update () {
-    // console.log(this.refs.username.value)
     var username = this.refs.username.value;
     var password = this.refs.password.value;
-    var againpassword = this.refs.againpassword.value
+    var passwordConfirmation = this.refs.passwordConfirmation.value
+    var code = this.refs.code.value
     var that = this;
     axios.post('/v1/api/update_password', {
+      code,
       username,
       password,
-      againpassword
+      passwordConfirmation
     })
     .then(function (response) {
       var warning = response.data.message
       that.setState({
         warning
       });
-      if (response.data.status === 0) {
-        let data = JSON.stringify(response.data);
-        localStorage.setItem('user', data)
-        browserHistory.push('/')
-      }
     })
     .catch(function (response) {
       var warning = '发生了未知的错误，请重试'
@@ -55,6 +50,9 @@ class UpdatePassword extends Component {
 
   sendEmail () {
     var that = this;
+    this.setState({
+      warning: '正在发送中。。'
+    });
     var username = this.refs.username.value;
     if (!username) {
       this.setState({
@@ -69,11 +67,6 @@ class UpdatePassword extends Component {
         that.setState({
           warning
         });
-        if (response.data.status === 0) {
-          this.setState({
-            warning: '邮件发送成功'
-          })
-        }
       })
       .catch(function (response) {
         var warning = '发生了未知的错误，请重试'
@@ -93,7 +86,7 @@ class UpdatePassword extends Component {
           <div className='login-body'>
               <div className='login-line warning'>{this.state.warning}</div>
               <div className='login-line'>
-                <input type='text' placeholder='用户名或邮箱' ref="username" value={this.state.user } />
+                <input type='text' placeholder='用户名或邮箱' ref="username" />
                 <i className='fa fa-user'></i>
               </div>
               <div className='login-line'>
@@ -101,11 +94,11 @@ class UpdatePassword extends Component {
                 <i className='fa fa-key'></i>
               </div>
               <div className='login-line'>
-                <input type='password' name='password' ref="againpassword" />
+                <input type='password' name='password' ref="passwordConfirmation" />
                 <i className='fa fa-key'></i>
               </div>
               <div className='login-line'>
-                <input type='text' name='password' ref="againpassword" />
+                <input type='text' name='password' ref="code" />
                 <button onClick={this.sendEmail.bind(this)}>发送验证码</button>
                 <i className='fa fa-envelope-o'></i>
               </div>
