@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const validator = require('validator')
 const gen_fuc = require('../common/gen').gen_fuc
 const sendMail = require('../common/sendMail').sendResetPassMail
-const roleControll = require('../common/roleControll')
+const roleControll = require('../config/roleControll')
 // 用户注册
 module.exports.signup = function (req, res) {
   if (req.session.user && roleControll.createUser.role.includes(req.session.user.role)) {
@@ -37,7 +37,7 @@ module.exports.signin = function (req, res, next) {
 
   if (validator.isEmail(req.body.username)) {
     query.where('email').equals(req.body.username)
-  } else if (validator.isMobilePhone(req.body.username, ‘zh-CN’)) {
+  } else if (validator.isMobilePhone(req.body.username, 'zh-CN')) {
     query.where('phone').equals(req.body.username)
   } else {
     query.where('username').equals(req.body.username)
@@ -205,7 +205,7 @@ module.exports.modifyUser = function (req, res) {
       })
     }
 
-    user.update({ $set: { req.body } }, function (err) {
+    user.update({ $set: req.body }, function (err) {
       if (err) {
         res.send({
           status: 1,
@@ -275,7 +275,7 @@ module.exports.getUserList = function (req, res) {
     })
   }
 
-  let query = models.User.find({destroy: false})
+  let query = models.User.find( { destroy: false } )
   query.where('role').equals(req.body.role)
   query.exec().then(function (users) {
     let length = users.length
@@ -294,7 +294,7 @@ module.exports.getUserList = function (req, res) {
       status: 0,
       message: data
     })
-  }
+  })
 }
 
 // 查找用户
@@ -315,7 +315,7 @@ module.exports.findUser = function (req, res) {
   let query = models.User.findOne({destroy: false})
   if (validator.isEmail(req.body.username)) {
     query.where('email').equals(req.body.username)
-  } else if (validator.isMobilePhone(req.body.username, ‘zh-CN’)) {
+  } else if (validator.isMobilePhone(req.body.username, 'zh-CN')) {
     query.where('phone').equals(req.body.username)
   } else {
     query.where('username').equals(req.body.username)
@@ -325,7 +325,7 @@ module.exports.findUser = function (req, res) {
     if (!user) {
       res.send({
         status: 1,
-        message:
+        message: '没有此用户'
       })
     }
     let data = {
@@ -339,5 +339,5 @@ module.exports.findUser = function (req, res) {
       status: 0,
       message: data
     })
-  }
+  })
 }
