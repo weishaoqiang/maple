@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development node src/server.js"
+    "dev": "NODE_ENV=development node src/server.js",
+    "build": "webpack --config ./webpack/webpack.client.dev.js --progress --colors --inline",
+    "server": "NODE_ENV=production node src/server.js"
   },
   "repository": {
     "type": "git",
