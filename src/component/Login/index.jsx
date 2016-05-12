@@ -1,17 +1,13 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import { Link, browserHistory } from 'react-router'
-import './index.css'
-
-var getCookie = function (sKey) {
-    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
-}
-
 
 class Login extends Component {
   constructor () {
     super()
     this.state = {
+      icon: '',
+      display: 'none',
       warning: '',
     }
   }
@@ -26,40 +22,78 @@ class Login extends Component {
       password
     })
     .then(function (response) {
-      var warning = response.data.message
+      let warning = response.data.message
+      let display = response.data.status === 1 ? '' : 'none'
+      let icon = response.data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
       that.setState({
+        icon,
+        display,
         warning
       });
+      setTimeout(()=>{
+        that.setState({
+          display: 'none'
+        })
+      },1000)
       if (response.data.status === 0) {
         browserHistory.push('/')
       }
     })
     .catch(function (response) {
-      var warning = '发生了未知的错误，请重试'
+      var warning = '请重试'
+      let display = response.data.status === 1 ? '' : 'none'
+      let icon = response.data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
       that.setState({
+        icon,
+        display,
         warning
       });
+      setTimeout(()=>{
+        that.setState({
+          display: 'none'
+        })
+      },1000)
     });
   }
   render () {
+    let display = this.state.display
     return (
-      <div className='login'>
-        <div className='login-container'>
-          <header>小区登陆系统</header>
-          <div className='login-body'>
-              <div className='login-line warning'>{this.state.warning}</div>
-              <div className='login-line'>
-                <input type='text' placeholder='用户名或邮箱' ref="username" />
-                <i className='fa fa-user'></i>
+      <div className='cell' >
+        <div className="hd">
+          <h1 className="page_title">小区登陆</h1>
+        </div>
+        <div className='bd'>
+          <div className='weui_cells weui_cells_form'>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">账号</label>
               </div>
-              <div className='login-line'>
-                <input type='password' name='password' ref="password" />
-                <i className='fa fa-key'></i>
+              <div className="weui_cell_bd weui_cell_primary">
+                <input className="weui_input" placeholder="邮箱或用户名" ref="username" />
               </div>
-              <div className='login-line'>
-                <Link to='update_password'>忘记密码啦？</Link>
-                <button onClick={this.login.bind(this)}>登陆</button>
+            </div>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">密码</label>
               </div>
+              <div className="weui_cell_bd weui_cell_primary">
+                <input className="weui_input" type='password' ref="password" />
+              </div>
+            </div>
+            <div className='weui_btn_area'>
+              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.login.bind(this)}>登陆</a>
+            </div>
+          </div>
+          <div className='weui_extra_area'>
+            <Link to='/update_password' style={{float:'left', color:'#225fba'}}>忘记密码</Link>
+            <Link to='/create_user' style={{float:'right', color:'#225fba'}}>新用户</Link>
+          </div>
+        </div>
+        <div id='toast' style={{display}}>
+          <div className='weui_mask_transparent'></div>
+          <div className='weui_toast'>
+            <i className={this.state.icon}></i>
+            <p className='weui_toast_content'>{this.state.warning}</p>
           </div>
         </div>
       </div>

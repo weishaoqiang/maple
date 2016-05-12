@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import { Link,browserHistory } from 'react-router'
 
-class UpdatePassword extends Component {
+class CreateUser extends Component {
   constructor () {
     super()
     this.state = {
@@ -13,6 +13,7 @@ class UpdatePassword extends Component {
   }
 
   change (data, that) {
+    console.log(data)
     let warning = data.message
     let display = ''
     let icon = data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
@@ -25,19 +26,26 @@ class UpdatePassword extends Component {
       that.setState({
         display: 'none'
       })
-    },1000)
+    },1500)
   }
-  update () {
+
+  createUser () {
     var username = this.refs.username.value;
-    var password = this.refs.password.value;
-    var passwordConfirmation = this.refs.passwordConfirmation.value
-    var code = this.refs.code.value
-    var that = this;
-    axios.post('/v1/api/update_password', {
-      code,
+    let email = this.refs.email.value;
+    let phone = this.refs.phone.value;
+    let name = this.refs.name.value;
+    let password = this.refs.password.value;
+    let passwordConfirmation = this.refs.passwordConfirmation.value
+    let code = this.refs.code.value
+    let that = this;
+    axios.post('/v1/api/signup', {
       username,
+      email,
+      phone,
+      name,
       password,
-      passwordConfirmation
+      passwordConfirmation,
+      code
     })
     .then(function (response) {
       that.change(response.data, that)
@@ -53,14 +61,16 @@ class UpdatePassword extends Component {
   }
 
   sendEmail () {
-    var that = this;
+    let that = this;
     that.change({status:0,message:'正在发送中'}, that)
-    var username = this.refs.username.value;
-    if (!username) {
-      that.change({status:0,message:'请输入用户名'}, that)
+    let email = this.refs.email.value;
+    let username = this.refs.email.value;
+    if (!email) {
+      that.change({status:0,message:'请输入邮箱'}, that)
     } else {
       axios.post('/v1/api/get_email_code', {
-        username
+        username,
+        email
       })
       .then(function (response) {
         that.change(response.data, that)
@@ -76,16 +86,40 @@ class UpdatePassword extends Component {
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">密码重置</h1>
+          <h1 className="page_title">用户注册</h1>
         </div>
         <div className='bd'>
           <div className='weui_cells weui_cells_form'>
             <div className='weui_cell'>
               <div className='weui_cell_hd'>
-                <label className="weui_label">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+                <label className="weui_label">登陆名称</label>
               </div>
               <div className="weui_cell_bd weui_cell_primary">
-                <input className="weui_input" placeholder="邮箱或用户名" ref="username" />
+                <input className="weui_input" placeholder="登陆名称" ref="username" />
+              </div>
+            </div>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+              </div>
+              <div className="weui_cell_bd weui_cell_primary">
+                <input className="weui_input" placeholder="邮箱" ref="email" />
+              </div>
+            </div>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">手机号码</label>
+              </div>
+              <div className="weui_cell_bd weui_cell_primary">
+                <input className="weui_input" type='number' placeholder="手机号码" ref="phone" />
+              </div>
+            </div>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">显示名称</label>
+              </div>
+              <div className="weui_cell_bd weui_cell_primary">
+                <input className="weui_input" placeholder="显示名称" ref="name" />
               </div>
             </div>
             <div className='weui_cell'>
@@ -114,12 +148,12 @@ class UpdatePassword extends Component {
               </div>
             </div>
             <div className='weui_btn_area'>
-              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.update.bind(this)}>更新密码</a>
+              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.createUser.bind(this)}>创建用户</a>
             </div>
           </div>
           <div className='weui_extra_area'>
             <Link to='/login' style={{float:'left', color:'#225fba'}}>登陆</Link>
-            <Link to='/create_user' style={{float:'right', color:'#225fba'}}>新用户</Link>
+            <Link to='/update_password' style={{float:'right', color:'#225fba'}}>找回密码</Link>
           </div>
         </div>
         <div id='toast' style={{display}}>
@@ -134,4 +168,4 @@ class UpdatePassword extends Component {
   }
 }
 
-export default UpdatePassword;
+export default CreateUser;

@@ -1,73 +1,34 @@
 @charset "UTF-8";
-html {
-  font-size: 20px;
-  color: #666;
-  font-family: Raleway,sans-serif;
+body {
+    overflow-x: hidden;
+    background-color: #fbf9fe;
 }
-header {
-  box-sizing: border-box;
+.container {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
-a, ul, li {
-  text-decoration: none;
-  list-style: none;
-  color: #666;
+.home {
+    padding-bottom: 30px;
 }
-ul {
-  margin: 0;
-  padding: 0;
+.hd {
+    padding: 2em 0;
 }
-.flex-body {
-  display: flex;
+.page_title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
 }
-.maple-flex {
-  line-height:2.5rem;
-  display:flex;
-  justify-content: space-between;
+.page_desc {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
 }
-.header {
-  flex:1;
-  border-bottom: 1px solid #C8C7CC;
+.cell .page_title {
+    color: #225fba;
 }
-.maple-header {
-  margin-left: 1rem;
-  /*font-weight: bolder;*/
-  font-size: 1.25rem;
-}
-.maple-user {
-  margin-right: 1rem;
-  font-weight: bolder;
-  font-size: 0.8rem;
-  color: rgba(0,122,255,1);
-  position: relative;
-}
-.maple-user:hover{
-  color: rgba(0,122,255,1);
-}
-.maple-user:hover .maple-user-show{
-  display: block;
-}
-.maple-user a:hover{
-  color: rgba(0,122,255,1);
-}
-.maple-user-show {
-  position: absolute;
-  right: -0.5rem;
-  top: 2.0  rem;
-  width: 6rem;
-  border: 1px solid #666;
-  display: none;
-}
-.maple-user-show li {
-  padding:0 10px;
-  line-height: 1.5rem;
-}
-.maple-user-show li:hover {
-  color:rgba(0,122,255,.5);
-}
-/*
- * 内容主题部分
-*/
-.maple-container {
-  display: flex;
-  flex: 1;
+.cell .bd {
+    padding-bottom: 30px;
 }

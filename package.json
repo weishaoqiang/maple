@@ -68,7 +68,8 @@
     "url-loader": "^0.5.7",
     "util": "^0.10.3",
     "validator": "^5.2.0",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "weui": "^0.4.2"
   },
   "devDependencies": {
     "webpack-dev-middleware": "^1.6.1",

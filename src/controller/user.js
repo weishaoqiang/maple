@@ -15,15 +15,45 @@ module.exports.signup = function (req, res) {
   } else {
     req.body.role = 'resident'
   }
-
-  const user = models.User(req.body);
-  user.save((err) => {
-    if (err) {
+  if (req.body.code) {
+    if (req.session.code != req.body.code) {
       res.send({
         status: 1,
-        message: '用户名创建失败，请重试'
+        message: '验证码错误'
       })
+    }
+  }
+  if (!req.body.name) {
+    req.body.name = req.body.username
+  }
+  let user = models.User(req.body);
+  let amount = models.Amount(user._id);
+  user.save((err) => {
+    if (err) {
+      if (err.errors.username) {
+        res.send({
+          status: 1,
+          message: err.errors.username.message
+        })
+      } else if (err.errors.email) {
+        res.send({
+          status: 1,
+          message: err.errors.email.message
+        })
+      } else if (err.errors.phone) {
+        res.send({
+          status: 1,
+          message: err.errors.phone.message
+        })
+      } else if (err.errors.password) {
+        res.send({
+          status: 1,
+          message: err.errors.password.message
+        })
+      }
+
     } else {
+      amount.save()
       res.send({
         status: 0,
         message:'创建用户成功'
@@ -89,29 +119,47 @@ module.exports.signout = function (req, res) {
 module.exports.getEmailCode = function (req, res) {
   let code = gen_fuc()
   let username = req.body.username
-  models.User.findOne({username}).then(function (user) {
-    if (!user) {
-      res.send({
-        status: 1,
-        message: '没有此用户'
-      })
-    } else {
-      req.session.code = code
-      sendMail(user.email, code, user.name, function(err, message) {
-        if (err) {
-          res.send({
-            status: 1,
-            message: '发送失败'
-          });
-        } else {
-          res.send({
-            status: 0,
-            message: '发送成功'
-          })
-        }
-      })
-    }
-  })
+  if (req.body.email) {
+    let email = req.body.email
+    req.session.code = code
+    sendMail(email, code, '用户', function(err, message) {
+      if (err) {
+        res.send({
+          status: 1,
+          message: '发送失败'
+        });
+      } else {
+        res.send({
+          status: 0,
+          message: '发送成功'
+        })
+      }
+    })
+  } else {
+    models.User.findOne({username}).then(function (user) {
+      if (!user) {
+        res.send({
+          status: 1,
+          message: '没有此用户'
+        })
+      } else {
+        req.session.code = code
+        sendMail(user.email, code, user.name, function(err, message) {
+          if (err) {
+            res.send({
+              status: 1,
+              message: '发送失败'
+            });
+          } else {
+            res.send({
+              status: 0,
+              message: '发送成功'
+            })
+          }
+        })
+      }
+    })
+  }
 }
 
 // 找回密码
