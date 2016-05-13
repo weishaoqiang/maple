@@ -28,7 +28,7 @@ class Content extends Component {
       <div className="tabbar">
         <div className="weui_tab">
           <div className="weui_tab_bd">
-
+            {this.props.children}
           </div>
           <div className="weui_tabbar">
             <a href="javascript:;" className="weui_tabbar_item weui_bar_item_on">
