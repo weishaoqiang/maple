@@ -12,6 +12,22 @@ class Login extends Component {
     }
   }
 
+  change(data, that) {
+    let warning = data.message
+    let display = data.status === 1 ? '' : 'none'
+    let icon = data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
+    that.setState({
+      icon,
+      display,
+      warning
+    });
+    setTimeout(()=>{
+      that.setState({
+        display: 'none'
+      })
+    },1000)
+  }
+
   login () {
     // console.log(this.refs.username.value)
     var username = this.refs.username.value;
@@ -22,37 +38,15 @@ class Login extends Component {
       password
     })
     .then(function (response) {
-      let warning = response.data.message
-      let display = response.data.status === 1 ? '' : 'none'
-      let icon = response.data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
-      that.setState({
-        icon,
-        display,
-        warning
-      });
-      setTimeout(()=>{
-        that.setState({
-          display: 'none'
-        })
-      },1000)
+
       if (response.data.status === 0) {
         browserHistory.push('/')
+      } else {
+        that.change(response.data, that)
       }
     })
     .catch(function (response) {
-      var warning = '请重试'
-      let display = response.data.status === 1 ? '' : 'none'
-      let icon = response.data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
-      that.setState({
-        icon,
-        display,
-        warning
-      });
-      setTimeout(()=>{
-        that.setState({
-          display: 'none'
-        })
-      },1000)
+      that.change({message:'请重试',status:1}, that)
     });
   }
   render () {

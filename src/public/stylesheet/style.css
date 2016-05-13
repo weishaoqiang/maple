@@ -1,4 +1,7 @@
 @charset "UTF-8";
+body, html, #app, .tabbar {
+  height: 100%;
+}
 body {
     overflow-x: hidden;
     background-color: #fbf9fe;

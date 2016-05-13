@@ -1,32 +1,23 @@
 import React,{Component} from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import 'weui'
-import Header from './component/Header'
+
 import Login from './component/Login'
 import UpdatePassword from './component/UpdatePassword'
 import CreateUser from './component/CreateUser'
-import Navbar from './component/Navbar'
+import Content from './component/Content'
 import './public/stylesheet/style.css'
 import getCookie from './common/getCookie'
 
 class App extends Component {
   constructor () {
     super()
-    this.state = {
-      isLogin: false
-    }
   }
   componentWillMount () {
     let user = getCookie('username')
-    let role = getCookie('role')
-    if (user) {
-      this.setState({
-        username: user,
-        role: role,
-        isLogin: true
-      })
-    } else {
+    console.log(user)
+    if (!user) {
       browserHistory.push('/login')
     }
   }
@@ -42,6 +33,7 @@ class App extends Component {
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
+      <IndexRoute component={Content}></IndexRoute>
       <Route path="login" component={Login}></Route>
       <Route path="update_password" component={UpdatePassword}></Route>
       <Route path="create_user" component={CreateUser}></Route>
