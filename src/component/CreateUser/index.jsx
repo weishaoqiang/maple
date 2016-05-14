@@ -29,7 +29,7 @@ class CreateUser extends Component {
     },1500)
   }
 
-  createUser () {
+  create () {
     var username = this.refs.username.value;
     let email = this.refs.email.value;
     let phone = this.refs.phone.value;
@@ -38,6 +38,7 @@ class CreateUser extends Component {
     let passwordConfirmation = this.refs.passwordConfirmation.value
     let code = this.refs.code.value
     let that = this;
+    console.log(axios.post)
     axios.post('/v1/api/signup', {
       username,
       email,
@@ -48,6 +49,7 @@ class CreateUser extends Component {
       code
     })
     .then(function (response) {
+      console.log('then')
       that.change(response.data, that)
       if (response.data.status === 0) {
         setTimeout(()=>{
@@ -56,6 +58,7 @@ class CreateUser extends Component {
       }
     })
     .catch(function (response) {
+      console.log(response)
       that.change(response.data, that)
     })
   }
@@ -148,7 +151,7 @@ class CreateUser extends Component {
               </div>
             </div>
             <div className='weui_btn_area'>
-              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.createUser.bind(this)}>创建用户</a>
+              <a href="javascript:" className="weui_btn weui_btn_primary" onClick={this.create.bind(this)}>创建用户</a>
             </div>
           </div>
           <div className='weui_extra_area'>

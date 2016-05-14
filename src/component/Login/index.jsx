@@ -29,7 +29,6 @@ class Login extends Component {
   }
 
   login () {
-    // console.log(this.refs.username.value)
     var username = this.refs.username.value;
     var password = this.refs.password.value;
     var that = this;
@@ -75,7 +74,7 @@ class Login extends Component {
               </div>
             </div>
             <div className='weui_btn_area'>
-              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.login.bind(this)}>登陆</a>
+              <a className="weui_btn weui_btn_primary" id='aaa' onClick={this.login.bind(this)}>登陆</a>
             </div>
           </div>
           <div className='weui_extra_area'>

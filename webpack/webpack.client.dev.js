@@ -44,7 +44,6 @@ var postCSSConfig = function() {
     require('autoprefixer')({
       browsers: ['last 2 versions', 'IE > 8']
     }),
-    // A PostCSS plugin to console.log() the messages registered by other
     // PostCSS plugins
     require('postcss-reporter')({
       clearMessages: true

@@ -21,5 +21,4 @@ if (process.env.NODE_ENV === 'develpment') {
 ].forEach(function(filename) {
   var modelName = _.capitalize(_.camelCase(filename));
   exports[modelName] = require(path.join(__dirname, filename));
-  console.log(modelName)
 });

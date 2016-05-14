@@ -114,7 +114,7 @@ class UpdatePassword extends Component {
               </div>
             </div>
             <div className='weui_btn_area'>
-              <a className="weui_btn weui_btn_primary" href="javascript:" onClick={this.update.bind(this)}>更新密码</a>
+              <a href="javascript:" className="weui_btn weui_btn_primary" onClick={this.update.bind(this)}>更新密码</a>
             </div>
           </div>
           <div className='weui_extra_area'>

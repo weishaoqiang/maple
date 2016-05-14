@@ -8,6 +8,8 @@ body {
 }
 .container {
   height: 100%;
+  max-width: 700px;
+  margin: 0 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -28,6 +30,9 @@ body {
   text-align: center;
   color: #888;
   font-size: 14px;
+}
+.cell {
+  overflow-x: hidden;
 }
 .cell .page_title {
     color: #225fba;

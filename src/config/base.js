@@ -1,5 +1,5 @@
 module.exports = {
-  name: '小区网站公众服务品台',
+  name: '小区网站公众服务平台',
   description: '',
   port: process.env.PORT || 3000,
   mongodb: process.env.MONGODB || 'mongodb://localhost/weisq',

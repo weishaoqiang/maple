@@ -11,12 +11,10 @@ class Content extends Component {
   componentWillMount () {
     let user = getCookie('username')
     let role = getCookie('role')
-    console.log(user)
     if (user) {
       this.setState({
         username: user,
         role: role,
-        isLogin: true
       })
     } else {
       browserHistory.push('/login')
@@ -24,6 +22,7 @@ class Content extends Component {
   }
 
   render () {
+    console.log(this.props)
     return (
       <div className="tabbar">
         <div className="weui_tab">

@@ -7,6 +7,9 @@ import Login from './component/Login'
 import UpdatePassword from './component/UpdatePassword'
 import CreateUser from './component/CreateUser'
 import Content from './component/Content'
+import Me from './component/Me'
+import Account from './component/Account'
+
 import './public/stylesheet/style.css'
 import getCookie from './common/getCookie'
 
@@ -16,7 +19,6 @@ class App extends Component {
   }
   componentWillMount () {
     let user = getCookie('username')
-    console.log(user)
     if (!user) {
       browserHistory.push('/login')
     }
@@ -32,8 +34,11 @@ class App extends Component {
 
 ReactDOM.render((
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Content}></IndexRoute>
+    <Route component={App}>
+      <Route path='/' component={Content}>
+        <IndexRoute component={Account}></IndexRoute>
+        <Route path="/user" component={Login}></Route>
+      </Route>
       <Route path="login" component={Login}></Route>
       <Route path="update_password" component={UpdatePassword}></Route>
       <Route path="create_user" component={CreateUser}></Route>
