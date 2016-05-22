@@ -13,7 +13,6 @@ class CreateUser extends Component {
   }
 
   change (data, that) {
-    console.log(data)
     let warning = data.message
     let display = ''
     let icon = data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
@@ -38,7 +37,6 @@ class CreateUser extends Component {
     let passwordConfirmation = this.refs.passwordConfirmation.value
     let code = this.refs.code.value
     let that = this;
-    console.log(axios.post)
     axios.post('/v1/api/signup', {
       username,
       email,
@@ -49,16 +47,15 @@ class CreateUser extends Component {
       code
     })
     .then(function (response) {
-      console.log('then')
-      that.change(response.data, that)
       if (response.data.status === 0) {
         setTimeout(()=>{
           browserHistory.push('/login')
         },1000)
+      } else {
+        that.change(response.data, that)
       }
     })
     .catch(function (response) {
-      console.log(response)
       that.change(response.data, that)
     })
   }

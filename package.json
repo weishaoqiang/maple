@@ -4,10 +4,9 @@
   "description": "韦少强——毕设",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development node src/server.js",
+    "dev": "NODE_ENV=development DEBUG=Maple node src/server.js",
     "build": "NODE_ENV=production webpack --config ./webpack/webpack.config.js --progress --colors --inline",
-    "server": "NODE_ENV=production node src/server.js"
+    "serve": "NODE_ENV=production node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -76,6 +75,7 @@
     "zepto": "^1.0.1"
   },
   "devDependencies": {
+    "debug": "^2.2.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"
   }

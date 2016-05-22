@@ -15,5 +15,5 @@ router.post('/delete_user', user.deleteUser)
 router.post('/get_user_list', user.getUserList)
 router.post('/find_user', user.findUser)
 router.post('/delete_user', user.deleteUser)
-
+router.get('/user/getDetail', user.getDetail)
 module.exports = router;

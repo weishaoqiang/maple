@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require("validator");
 const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -12,7 +13,7 @@ const AmountSchema = new Schema({
   // 需缴的电费
   energy: { type: 'Number', default: 0 },
   // 关联用户
-  uid: { type: 'Number' },
+  uid: { type: ObjectId },
   // 删除标记
   destroyedAt: { type: 'Date' }
 });

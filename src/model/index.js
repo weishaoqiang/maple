@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const path = require('path');
 const _ = require('lodash')
+const debug = require('debug')('Maple');
 
-var connect = mongoose.connect(config.base.mongodb, function (err) {
+let connect = mongoose.connect(config.base.mongodb, function (err) {
   if (err) {
-    console.error('connect to %s error', config.base.mongodb, err.message);
+    debug('connect to %s error' + err.message, config.base.mongodb)
     process.exit(1);
+  } else {
+    debug('mongodb has be connected')
   }
 });
 
@@ -17,7 +20,9 @@ if (process.env.NODE_ENV === 'develpment') {
   'user',
   'notification',
   'amount',
-  'check'
+  'check',
+  'repair',
+  'detail'
 ].forEach(function(filename) {
   var modelName = _.capitalize(_.camelCase(filename));
   exports[modelName] = require(path.join(__dirname, filename));

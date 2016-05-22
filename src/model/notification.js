@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require("validator");
 const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -18,9 +19,9 @@ const NotificationSchema = new Schema({
   // 推送通知关联 MODEL
   notifiableType: { type: 'String', required: true, enum: ['activity','repair','amount'] },
   // 推送通知关联用户
-  uid: { type: 'Number' },
+  uid: { type: ObjectId },
   // 原操作用户 sourceUid
-  sourceUid: { type: 'Number' },
+  sourceUid: { type: ObjectId },
   // 是否是系统推送
   isSystem: { type: 'Boolean', default: false },
   // 删除标记

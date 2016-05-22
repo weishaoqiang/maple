@@ -2,6 +2,7 @@ const cors = require('cors')
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
+const debug = require('debug')('Maple')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 // const renderToString = require('react-dom').server
@@ -25,8 +26,10 @@ global.models = require('./model')
 // -----------------------------------------------------------------------------
 if (node_env === 'development') {
   const compiler = webpack(wbpkconfig);
+  debug('webpack is working')
   app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
+    noInfo: false,
+    stats: true,
     publicPath: wbpkconfig.output.publicPath
   }));
 
@@ -56,6 +59,7 @@ app.use(require('response-time')())
 //
 // 设置api 路由
 // -----------------------------------------------------------------------------
+debug('加载api....')
 app.use('/v1/api', require('./api'))
 app.use('/v1/api', function (req, res, next) {
   res.send({
@@ -66,10 +70,11 @@ app.use('/v1/api', function (req, res, next) {
 //
 // 由于前端使用spa 所以所有的路由都指向 首页
 // -----------------------------------------------------------------------------
+debug('加载路由。。。')
 app.use('*', (req, res, next) => {
   res.render('index');
 })
 
 app.listen(config.base.port,function () {
-  console.log('Listen on port %s', config.base.port)
+  debug('Listen on port %s', config.base.port)
 })

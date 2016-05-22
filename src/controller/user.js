@@ -26,8 +26,9 @@ module.exports.signup = function (req, res) {
   if (!req.body.name) {
     req.body.name = req.body.username
   }
-  let user = models.User(req.body);
-  let amount = models.Amount(user._id);
+  let user = new models.User(req.body);
+  let amount = new models.Amount({ uid: user.id })
+  let detail = new models.Detail({ uid: user.id })
   user.save((err) => {
     if (err) {
       if (err.errors.username) {
@@ -53,7 +54,8 @@ module.exports.signup = function (req, res) {
       }
 
     } else {
-      amount.save()
+      amount.save((err)=>{console.log(err)})
+      detail.save((err)=>console.log(err))
       res.send({
         status: 0,
         message:'创建用户成功'
@@ -229,7 +231,7 @@ module.exports.modifyUser = function (req, res) {
       message: '请先登录'
     })
   } else if (!roleControll.modifyUser.role.includes(req.session.user.role)) {
-    if (req.body.id) {
+    if (req.body.uid) {
       res.send({
         status: 1,
         message: '您没有权限'
@@ -245,7 +247,7 @@ module.exports.modifyUser = function (req, res) {
   }
 
   let userId = req.body.id || req.session.user.id
-  models.User.findOne({_id: userId}).then(function (user) {
+  models.Detail.findOne({uid: userId}).then(function (user) {
     if (!user) {
       res.send({
         status: 1,
@@ -387,5 +389,42 @@ module.exports.findUser = function (req, res) {
       status: 0,
       message: data
     })
+  })
+}
+
+// 获取用户详情
+module.exports.getDetail = function (req, res) {
+  if (!req.session.user) {
+    req.send({
+      status: 1,
+      message: '请先登录'
+    })
+  }
+  if (!roleControll.findUser.role.includes(req.session.user.role)) {
+    if (req.query.uid && req.query.uid != req.session.user.id) {
+      req.send({
+        status: 1,
+        message: '您没有权限'
+      })
+    }
+  }
+  let uid = req.query.uid || req.session.user.id
+  console.log(uid);
+  models.Detail.findOne({
+    uid: uid
+  }).then(function(user) {
+    console.log('2222222222222');
+    console.log(user);
+    if (!user) {
+      res.send({
+        status: 1,
+        message: '没用此用户'
+      })
+    } else {
+      res.send({
+        status: 0,
+        message: user
+      })
+    }
   })
 }

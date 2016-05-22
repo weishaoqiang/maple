@@ -9,6 +9,7 @@ import CreateUser from './component/CreateUser'
 import Content from './component/Content'
 import Me from './component/Me'
 import Account from './component/Account'
+import Detail from './component/Detail'
 
 import './public/stylesheet/style.css'
 import getCookie from './common/getCookie'
@@ -24,9 +25,12 @@ class App extends Component {
     }
   }
   render () {
+    let user = getCookie('username')
     return (
       <div className='container' id='container'>
-        {this.props.children}
+        {this.props.children && React.cloneElement(this.props.children, {
+          user
+        })}
       </div>
     )
   }
@@ -36,9 +40,10 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route component={App}>
       <Route path='/' component={Content}>
-        <IndexRoute component={Account}></IndexRoute>
-        <Route path="/user" component={Login}></Route>
+        <IndexRoute component={Me}></IndexRoute>
+        <Route path="/user" component={Me}></Route>
       </Route>
+      <Route path='user_info' component={Detail}></Route>
       <Route path="login" component={Login}></Route>
       <Route path="update_password" component={UpdatePassword}></Route>
       <Route path="create_user" component={CreateUser}></Route>

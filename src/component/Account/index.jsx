@@ -13,7 +13,6 @@ class Account extends Component {
   }
 
   change (data, that) {
-    console.log(data)
     let warning = data.message
     let display = ''
     let icon = data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
@@ -56,7 +55,6 @@ class Account extends Component {
       }
     })
     .catch(function (response) {
-      console.log(response)
       that.change(response.data, that)
     })
   }
