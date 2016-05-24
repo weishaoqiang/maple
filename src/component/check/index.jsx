@@ -7,25 +7,26 @@ let Item = (params) =>
     <h4 className='weui_media_title'>{params.title}</h4>
     <p className="weui_media_desc">{params.message}</p>
     <ul className='weui_media_info'>
-      <li className='weui_media_info_meta'>{new Date(params.createdAt).toLocaleDateString()}</li>
+      <li className='weui_media_info_meta'>{params.type}</li>
+      <li className='weui_media_info_meta'>{params.amount}</li>
     </ul>
 
 
   </div>
 
-class Notification extends Component {
+class Check extends Component {
   constructor () {
     super()
     this.state = {
-      notifications: ''
+      checks: ''
     }
   }
   componentDidMount () {
     let that = this
-    axios.get('/v1/api/notification').then(function (response) {
+    axios.get('/v1/api/check').then(function (response) {
       if (response.data.status === 0) {
         that.setState({
-          notifications: response.data.message
+          checks: response.data.message
         })
       }
     })
@@ -40,10 +41,10 @@ class Notification extends Component {
         <div className='bd'>
 
           {
-            Object.prototype.toString.call(this.state.notifications) === '[object Array]' ?
-              this.state.notifications.map(function (notification, key) {
-                return <Item {...notification} key={key} />
-              }) : '暂无通知'
+            Object.prototype.toString.call(this.state.checks) === '[object Array]' ?
+              this.state.checks.map(function (check, key) {
+                return <Item {...check} key={key} />
+              }) : '暂无账单'
           }
 
         </div>
@@ -53,4 +54,4 @@ class Notification extends Component {
   }
 }
 
-export default Notification;
+export default Check;

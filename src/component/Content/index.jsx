@@ -29,18 +29,12 @@ class Content extends Component {
             {this.props.children}
           </div>
           <div className="weui_tabbar">
-            <a href="javascript:;" className="weui_tabbar_item" activeClassName='weui_bar_item_on'>
-              <div className="weui_tabbar_icon">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAAXNSR0IArs4c6QAAAldJREFUaAXtWj9L5EAUfy8Giyv0KgvRc/1TXC0KFiIuroWfwkXE+wbicXAscqhfQRFJY2F33RUia2HhRxDcXf9iYSMW12jMuzer4zm7rGZNMDvhDWRnM28m8/szkwmZAEgSBUQBUUAUEAUaKoCNIkMLe4POHXU3irdaedCOV6WNqXItrjqCg3N7MxAE60TQW1u51c8R4QIc51t5a+qPxmoQHMoXxwLyDzjYxscJIF7qii2fE/Uwxn4+Hhx0x0te9lBhdtWPTgT+L/7fBghrFW/6uy63JR/I764CwdITj5zC7RjgCUar5+2wZpTbcvKEmwBGNGSDIAc6VKCyMX2rK9iUP+Mm6NS4DYK6ME25ELTdzdQ7aCwTr7n1NV/M3JF/8lqdt2KIuFL2cj/eqhdnPDRB3wUf7yMu/AQffncOTbC0mb1kZa17fEv9HBSCcU74JK4lDiahepx9pt7B0MtEHAt9bM4gnlW8XCbM9cTBOpWaUK+ubcSC94yi1DsoBCOOqsSbi4OJWxARgDgYUcDEm4uDiVsQEUDoZ9Hnfoj6BmZ3+SX4xyd+6dV0p6kfoqEdPPKypyyfsd3WtJwJNEi9g0IwgVEVa5c1DmL17khE1s01pcp/3I88VFkNQThWhbxXP6xy29IL3FUeCr9xF0UHflMAiwDBDu93/3QBL2wh6QP1AgXLCq/ioXEbBLs+fypc3/ydYKvHeDN/mxvpelbkxHj5U5JDxUN/MFM31yYLRff8NJhHoEmmZ82HQEzkiuntf8k4m/uFbPOPPFZYKCBFAVFAFBAFYlbgHwSllU3rgBEpAAAAAElFTkSuQmCC" alt="" />
-              </div>
-              <p className="weui_tabbar_label">新闻</p>
-            </a>
-            <a href="javascript:;" className="weui_tabbar_item" activeClassName='weui_bar_item_on'>
+            <Link to='/check' className="weui_tabbar_item" activeClassName='weui_bar_item_on'>
               <div className="weui_tabbar_icon">
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAAXNSR0IArs4c6QAAAH5JREFUaAXt17ERgDAIAEDiKs5i4zlERnOJVO7iKvFsc0fvmacDGvikIUIQIECAAIFUoGSdtV6t99iz/ufqJdp9bsc41zIW5AQIECBAgAABAgQIECDwCrgH/QMCBAgQIECAAAECBAjMKeAenPPdbU2AAAECBAgQIECAAIHfCzxT3RUKkM/E+AAAAABJRU5ErkJggg==" alt="" />
               </div>
               <p className="weui_tabbar_label">费用</p>
-            </a>
+            </Link>
             <Link to='/notification' className="weui_tabbar_item" activeClassName='weui_bar_item_on'>
               <div className="weui_tabbar_icon">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAAXNSR0IArs4c6QAABIpJREFUaAXtWk9IVEEYn2/LSomIiAJDMLU6GWkQ/TtoGQSdDDL04iYdulqXDhF76FBQdO0Q/iFIMqhLQaCmh0oI0sgumlYQGkVERGilven7vX2zvre7rr6debgub2D3zXvzfd/8fvPNm/m+4QkRlnAEcnoEKB26A60vCr/9mD4qhagUUq5NJ5Mzz4j+MImRzRuL+gZvHpxJxpVCcNfZ3t2zs+K+EHJnsnBu39NYQYE4NXq77o0bp4cgPPfl+/RrkCNBw+zBJxGSf90KuVa3JK1hEselkFVC0NjWTUV73J5c7QaMaanIlWxftW8gVjvnbs/Vek2s//KnD/9egmScg3iksEZUBVf7nYtfn6wUcsANrJhtqCsOqKN4CKoFJdenZRy69z+BOWlR9BL06uTFXUhwpbsx9GDowRwfgbyfop5IJghnSClpR8vTKkuIXWTJYvQhIzTFIzv6ru3IMBHx3hxcCYxg+bnnW+TM74sV0b4GDqG2gUKCiSUFExbcNlnW3NdNheuuTtw69DUImoFM0fLm3gtiZmZCCKvVJkf0kQPiLorQDfvHdcHP4sStVsjaOgEwNOrBmmj/uk9yro2BNwIrZyQPmdCV8fajQ+mwV5zpq5aWvMTy9dx+vby5Z28JrW4Z6Kj9nU4+m2dGCcbJiUb21k+ejk0TnXWPM4FyiJ8sa+45wTp3WaeRbUClKZOenzZjUxRTDABtciQOv+88lpGcGyRkJes4A9NocroaIYgFhQHHABqee99xbAR1PwU60HV0Yo5NPybSyhohiNWS36P1eOf8eC4ZEXRhA7ZgM7k9m3ttgtjniKzT6BwLSjYg3DrKBgnZANvutmzq2gQrov3VUopiLPsLrZZ+gNk2nC0Etv3oppPVJigj8dM3knIwXQfZPFO2lO1sbCgdbYIq/BIcfimj2lfHVsK2hkFtghp9L6pK/CIuKrSIgDZBBM52H04gvUh/S2uWwo5dLaLPS1NYWEqbIFk0BvO8lh5YuBt/Ley2/dBgcKP+NFOltQmOd9QO8VSa4iPHUsSWqV34e2LbYFu8H04infKnnSqtTRD5nJSRezCNwDm1C39PlA0pqNtErqhNEPCLCuQ1HvFfyAoQOPujNC8NXdiALeSI8y3Z14wQfHu77gtDiAEGsoKyaE8l6n4KdKDr6MRMJcBGCAIUp0Y3GGAXLxAb+BDimR9P2ukS69i6bAO2/AxOJlljBNEJklVFkm8fcdrzINPCgzbIQFaRgw3YMlWMJrxOJt7EoF8xwBjeJ1406suivR/t8Mu1Z2JbsSyrFETwzkEenuNzDqPFKEGFDEA5n7sjOOVBpsHLbCl7qFTwYVOicISO7cVegQM8dAqEIEg4i8R5JnfBzjg4KFexJaIfBAjj7dhDV+ixofKUQwBTFj9PoU7PbSA3RheZQBBqGg0Jag7gsquHHlx2F2gCCD2oOYDLru71IH/YBkT4PGrZkfkEkMDscFDqHoIcKNtH7nw9zp9HBRblqM5NXYEVmGFPcVC2+X6+5OPHeB6CoJrXn1MqX+bTB7GKU3gNRyBHR+A/KFjbvWAqMXEAAAAASUVORK5CYII=" alt="" />

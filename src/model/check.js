@@ -15,8 +15,10 @@ const checkSchema = new Schema({
   message: { type: 'String' },
   // 类型
   type: { type: 'String', enum: ['ALL', 'WATER', 'ENERGY'] },
-  // 关联用户
+  // 操作用户
   uid: { type: ObjectId },
+  // 关联用户
+  sourceUid: { type: ObjectId },
   // 删除标记
   destroyedAt: { type: 'Date' }
 });

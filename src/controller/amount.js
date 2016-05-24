@@ -1,3 +1,5 @@
+const roleControll = require('../config/roleControll')
+const debug = require('debug')('Maple')
 // 住户生活相关
 
 // 充值用户金额或增加水电费
@@ -36,7 +38,7 @@ module.exports.topUpAmount = function (req, res) {
       data = {
         water
       }
-    } else if {
+    } else {
       let energy = req.body.energy
       data = {
         energy
@@ -54,6 +56,7 @@ module.exports.topUpAmount = function (req, res) {
         message: '操作成功'
       })
     })
+  })
 }
 
 // 用户缴费
@@ -81,7 +84,6 @@ module.exports.deductAmount = function (req, res) {
       })
     }
 
-    let amount = amount.amount
     amount = amount - amount.water - amount.energy
     amount.update({$set: [{amount}, {water: 0}, {energy: 0}]}, function (err) {
       if (err) {
@@ -95,6 +97,7 @@ module.exports.deductAmount = function (req, res) {
         message: '操作成功'
       })
     })
+  })
 }
 
 // 查看剩余金额
@@ -131,5 +134,5 @@ module.exports.readAmount = function (req, res) {
       status: 0,
       message: amount
     })
-  }
+  })
 }

@@ -3,6 +3,8 @@ const router = express.Router()
 const user = require('../controller/user')
 const notification = require('../controller/notification')
 const repair = require('../controller/repair')
+const amount = require('../controller/amount')
+const check = require('../controller/check')
 
 //用户相关api
 router.post('/signup', user.signup)
@@ -24,4 +26,7 @@ router.post('/notification', notification.createNotification) // 创建通知
 router.get('/notification', notification.readNotification)
 router.get('/repair', repair.getRepair) // 获取报修
 
+
+// 资金类相关
+router.get('/check', check.index)
 module.exports = router;

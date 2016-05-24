@@ -76,9 +76,9 @@ module.exports.readNotification = function (req, res) {
   }
 
   let query = models.Notification.find({destroyedAt: null})
-  query.where('_id').equals(req.params.id)
+  query.where('notifiableType').equals('activity')
   query.exec().then(function (notification) {
-    if (!notification) {
+    if (!notification || notification.length === 0) {
       res.send({
         status: 1,
         message: '通知不存在'
