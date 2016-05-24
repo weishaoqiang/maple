@@ -1,4 +1,5 @@
-
+const roleControll = require('../config/roleControll')
+const debug = require('debug')('Maple')
 // 通知类相关，包括小区通知，报修相关通知，投诉建议等
 
 // 添加通知
@@ -16,12 +17,39 @@ module.exports.createNotification = function (req, res) {
     })
   }
 
+  var repair;
+
   req.body.sourceUid = req.session.user.id
+  if (req.body.type === 'repair') {
+    var username = req.session.user.name;
+    repair = new models.Repair({
+      title: `${username}住户的报修`,
+      message: req.body.message || '暂无报修的相关描述',
+      sourceUid: req.session.user.id
+    })
+    req.body.id = repair._id;
+  }
   models.Notification.notify(req.body, function (err) {
     if (err) {
+      debug(`用户报修失败${err}`)
       res.send({
         status: 1,
-        message: err
+        message: '报修错误..'
+      })
+    } else if (repair){
+      repair.save(function (err) {
+        if (err) {
+          debug(`用户报修失败${err}`)
+          res.send({
+            status: 1,
+            message: '报修错误...'
+          })
+        } else {
+          res.send({
+            status: 0,
+            message: '发送推送成功'
+          })
+        }
       })
     } else {
       res.send({
@@ -128,7 +156,7 @@ module.exports.updateNotification = function (req, res) {
       })
     }
 
-  }
+  })
 }
 
 // 删除通知
@@ -175,6 +203,6 @@ module.exports.updateNotification = function (req, res) {
         message: '删除成功'
       })
     })
-  }
+  })
 
 }

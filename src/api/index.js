@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const user = require('../controller/user')
+const notification = require('../controller/notification')
+const repair = require('../controller/repair')
 
 //用户相关api
 router.post('/signup', user.signup)
@@ -16,4 +18,9 @@ router.post('/get_user_list', user.getUserList)
 router.post('/find_user', user.findUser)
 router.post('/delete_user', user.deleteUser)
 router.get('/user/getDetail', user.getDetail)
+
+// 通知类相关
+router.post('/notification', notification.createNotification) // 创建通知
+router.get('/repair', repair.getRepair) // 获取报修
+
 module.exports = router;

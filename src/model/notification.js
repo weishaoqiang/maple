@@ -12,18 +12,14 @@ const NotificationSchema = new Schema({
   message: { type: 'String', required: true, default: '' },
   // 用户是否已读
   read: { type: 'Boolean', default: false },
-  // 修理员是否已解决
-  finish: { type: 'Boolean', default: false },
   // 推送通知关联 ID
-  notifiableId: { type: 'String' },
+  notifiableId: { type: ObjectId },
   // 推送通知关联 MODEL
   notifiableType: { type: 'String', required: true, enum: ['activity','repair','amount'] },
   // 推送通知关联用户
   uid: { type: ObjectId },
   // 原操作用户 sourceUid
   sourceUid: { type: ObjectId },
-  // 是否是系统推送
-  isSystem: { type: 'Boolean', default: false },
   // 删除标记
   destroyedAt: { type: 'Date' }
 });

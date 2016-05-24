@@ -39,6 +39,7 @@ class Detail extends Component {
     let that = this
     axios.get('v1/api/user/getDetail').then(function(response) {
       let rs = response.data || {}
+      rs.message = rs.message || {}
       let data = {
         真实姓名: rs.message.name || '请设置真实姓名',
         身份证: rs.message.identityCard || '请设置身份证',

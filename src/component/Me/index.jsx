@@ -27,8 +27,8 @@ class Me extends Component {
 
           <div className="weui_cells_title">生活相关</div>
           <div className='weui_cells'>
-            <Item title='我要报修' />
-            <Item title='我的报修' />
+            <Item title='我要报修' path='notification/create' />
+            <Item title='我的报修' path='repair' />
           </div>
 
           <div className="weui_cells_title">用户相关</div>

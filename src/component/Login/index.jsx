@@ -8,7 +8,7 @@ class Login extends Component {
     this.state = {
       icon: '',
       display: 'none',
-      warning: '',
+      warning: ''
     }
   }
 

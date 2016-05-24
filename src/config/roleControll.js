@@ -64,6 +64,12 @@ module.exports = {
     description: '删除通知',
     role: ['system', 'staff', 'repairer', 'resident']
   },
+  readRepair: {
+    method: 'get',
+    name: '获取报修列表',
+    description: '获取用户的报修',
+    role: ['system', 'staff', 'repairer', 'resident']
+  },
 
   // 住户生活相关
   topUpAmount: {
