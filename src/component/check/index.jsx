@@ -36,7 +36,7 @@ class Check extends Component {
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">小区通知</h1>
+          <h1 className="page_title">用户账单</h1>
         </div>
         <div className='bd'>
 
