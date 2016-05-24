@@ -21,6 +21,7 @@ router.get('/user/getDetail', user.getDetail)
 
 // 通知类相关
 router.post('/notification', notification.createNotification) // 创建通知
+router.get('/notification', notification.readNotification)
 router.get('/repair', repair.getRepair) // 获取报修
 
 module.exports = router;

@@ -13,19 +13,19 @@ let Item = (params) =>
 
   </div>
 
-class getRepair extends Component {
+class Notification extends Component {
   constructor () {
     super()
     this.state = {
-      repairs: ''
+      notifications: ''
     }
   }
   componentDidMount () {
     let that = this
-    axios.get('/v1/api/repair').then(function (response) {
+    axios.get('/v1/api/notification').then(function (response) {
       if (response.data.status === 0) {
         that.setState({
-          repairs: response.data.message
+          notification: response.data.message
         })
       }
     })
@@ -44,7 +44,7 @@ class getRepair extends Component {
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">我的报修</h1>
+          <h1 className="page_title">小区通知</h1>
         </div>
         <div className='bd'>
 
@@ -64,4 +64,4 @@ class getRepair extends Component {
   }
 }
 
-export default getRepair;
+export default Notification;

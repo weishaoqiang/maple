@@ -109,6 +109,10 @@ class Detail extends Component {
               })
             }
 
+            <div className='weui_btn_area'>
+              <a href="javascript:" className="weui_btn weui_btn_primary" onClick={()=>{browserHistory.goBack()}}>返回</a>
+            </div>
+
           </div>
         </div>
 

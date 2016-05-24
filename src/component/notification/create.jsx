@@ -85,6 +85,7 @@ class createNotification extends Component {
 
             <div className='weui_cell_bd weui_cell_primary'>
               <a href="javascript:;" onClick={this.postDate.bind(this)} className="weui_btn weui_btn_primary">确定</a>
+              <a href="javascript:" className="weui_btn weui_btn_primary" onClick={()=>{browserHistory.goBack()}}>返回</a>
             </div>
 
             <div id='toast' style={{display}}>

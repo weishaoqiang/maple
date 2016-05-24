@@ -75,7 +75,7 @@ module.exports.readNotification = function (req, res) {
     })
   }
 
-  let query = models.Notification.findOne({destroyedAt: null})
+  let query = models.Notification.find({destroyedAt: null})
   query.where('_id').equals(req.params.id)
   query.exec().then(function (notification) {
     if (!notification) {
