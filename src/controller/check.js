@@ -1,5 +1,4 @@
 const roleControll = require('../config/roleControll')
-const debug = require('debug')('Maple')
 
 module.exports.index = function (req, res) {
   if (!req.session.user) {

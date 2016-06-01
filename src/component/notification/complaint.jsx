@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import { Link,browserHistory } from 'react-router'
 
-class createNotification extends Component {
+class createComplaint extends Component {
   constructor () {
     super()
 
@@ -22,14 +22,14 @@ class createNotification extends Component {
     axios.post('/v1/api/notification', {
       title,
       message,
-      type: 'repair'
+      type: 'complaint'
     }).then(function (response) {
       if (response.data.status === 0) {
         browserHistory.push('/user')
       } else {
         let icon = response.data.status === 1 ? 'weui_icon_msg weui_icon_info' : 'weui_icon_toast'
         let display = 'block'
-        let warning = '创建失败，重试或请联系管理员'
+        let warning = response.data.message || '系统出错，请联系管理员'
         that.setState({
           icon,
           display,
@@ -58,7 +58,7 @@ class createNotification extends Component {
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">创建报修</h1>
+          <h1 className="page_title">投诉建议</h1>
         </div>
         <div className='bd'>
           <div className='weui_cells weui_cells_form'>
@@ -68,7 +68,7 @@ class createNotification extends Component {
                 <label className="weui_label">标题</label>
               </div>
               <div className="weui_cell_bd weui_cell_primary">
-                <input className="weui_input" placeholder="通知标题" ref="title" />
+                <input className="weui_input" placeholder="建议标题" ref="title" />
               </div>
             </div>
 
@@ -104,4 +104,4 @@ class createNotification extends Component {
   }
 }
 
-export default createNotification
+export default createComplaint

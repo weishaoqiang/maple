@@ -10,8 +10,6 @@ let Item = (params) =>
       <li className='weui_media_info_meta'>{params.type}</li>
       <li className='weui_media_info_meta'>{params.amount}</li>
     </ul>
-
-
   </div>
 
 class Check extends Component {

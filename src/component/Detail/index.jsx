@@ -42,8 +42,9 @@ class Detail extends Component {
       rs.message = rs.message || {}
       let data = {
         真实姓名: rs.message.name || '请设置真实姓名',
+        手机号码: rs.message.phone || '请输入手机号码',
         身份证: rs.message.identityCard || '请设置身份证',
-        地址: rs.message.address || '请设置住址',
+        地址: rs.message.address || '请设置住址'
       }
       that.setState({
         user: data,
@@ -77,7 +78,8 @@ class Detail extends Component {
     let data = {
       真实姓名: 'name',
       身份证: 'identityCard',
-      地址: 'address'
+      地址: 'address',
+      手机号码: 'phone'
     }
     let value = this.state.content
     let param = data[this.state.title];

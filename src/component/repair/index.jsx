@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 
 let Item = (params) =>
   <div className='weui_media_box weui_media_text'>
@@ -8,8 +8,13 @@ let Item = (params) =>
     <p className="weui_media_desc">{params.message}</p>
     <ul className='weui_media_info'>
       <li className='weui_media_info_meta'>{params.finish ? '已处理' : '未处理'}</li>
+      <li className='weui_media_info_meta'>住户:{params.sourceUid.name}</li>
+      <li className='weui_media_info_meta'>处理人:{params.uid ? params.uid.name : '暂无'}</li>
     </ul>
-
+    <ul className='weui_media_info'>
+      <li className='weui_media_info_meta'>地址: { params.address }</li>
+      <li className='weui_media_info_meta'>标题: { params.title }</li>
+    </ul>
 
   </div>
 
@@ -33,7 +38,7 @@ class getRepair extends Component {
 
   handChange (event) {
     if (event.target.value.length > this.messageMaxLength) {
-      return null;
+      return null
     }
     this.setState({
       message: event.target.value
@@ -41,16 +46,20 @@ class getRepair extends Component {
   }
 
   render () {
+    let role = this.props.role || ''
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">我的报修</h1>
+          <h1 className="page_title">报修</h1>
         </div>
         <div className='bd'>
 
           {
             Object.prototype.toString.call(this.state.repairs) === '[object Array]' ?
               this.state.repairs.map(function (repair, key) {
+                if (role === 'repairer') {
+                  return <Item {...repair} key={key} />
+                }
                 return <Item {...repair} key={key} />
               }) : '没有报修'
           }
@@ -64,4 +73,4 @@ class getRepair extends Component {
   }
 }
 
-export default getRepair;
+export default getRepair

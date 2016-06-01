@@ -1,5 +1,4 @@
 const roleControll = require('../config/roleControll')
-const debug = require('debug')('Maple')
 // 住户生活相关
 
 // 充值用户金额或增加水电费
@@ -29,9 +28,9 @@ module.exports.topUpAmount = function (req, res) {
 
     let data
     if (req.body.amount) {
-      let amout = req.body.amount
+      let amount = req.body.amount
       data = {
-        amount
+        amount: amount
       }
     } else if (req.body.water) {
       let water = req.body.water
@@ -117,7 +116,7 @@ module.exports.readAmount = function (req, res) {
 
   let query = models.Amount.findOne({destroyedAt: null})
   let uid
-  if (req.session.user.role != resident) {
+  if (req.session.user.role != 'resident') {
     uid = req.params.uid
   } else {
     uid = req.session.user.id
@@ -130,7 +129,7 @@ module.exports.readAmount = function (req, res) {
         message: '账号不存在'
       })
     }
-    re.send({
+    res.send({
       status: 0,
       message: amount
     })

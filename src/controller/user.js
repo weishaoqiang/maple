@@ -3,6 +3,7 @@ const validator = require('validator')
 const gen_fuc = require('../common/gen').gen_fuc
 const sendMail = require('../common/sendMail').sendResetPassMail
 const roleControll = require('../config/roleControll')
+const debug = require('debug')('Maple')
 // 用户注册
 module.exports.signup = function (req, res) {
   if (req.session.user && roleControll.createUser.role.includes(req.session.user.role)) {
@@ -26,7 +27,7 @@ module.exports.signup = function (req, res) {
   if (!req.body.name) {
     req.body.name = req.body.username
   }
-  let user = new models.User(req.body);
+  let user = new models.User(req.body)
   let amount = new models.Amount({ uid: user.id })
   let detail = new models.Detail({ uid: user.id })
   user.save((err) => {
@@ -54,8 +55,8 @@ module.exports.signup = function (req, res) {
       }
 
     } else {
-      amount.save((err)=>{console.log(err)})
-      detail.save((err)=>console.log(err))
+      amount.save((err)=>{debug(err)})
+      detail.save((err)=>debug(err))
       res.send({
         status: 0,
         message:'创建用户成功'
@@ -64,7 +65,7 @@ module.exports.signup = function (req, res) {
   })
 }
 // 用户登录
-module.exports.signin = function (req, res, next) {
+module.exports.signin = function (req, res) {
   let query = models.User.findOne()
 
   if (validator.isEmail(req.body.username)) {
@@ -82,7 +83,7 @@ module.exports.signin = function (req, res, next) {
           res.send({
             status: 1,
             message: '密码或用户名错误'
-          });
+          })
         } else {
           req.session.user = {
             id : user.id,
@@ -90,8 +91,8 @@ module.exports.signin = function (req, res, next) {
             role: user.role,
             email: user.email
           }
-          res.cookie('username', user.name);
-          res.cookie('role', user.role);
+          res.cookie('username', user.name)
+          res.cookie('role', user.role)
           res.send({
             status: 0,
             message: '登陆成功',
@@ -103,7 +104,7 @@ module.exports.signin = function (req, res, next) {
       res.send({
         status: 1,
         message: '没有此用户'
-      });
+      })
     }
 
   })
@@ -124,12 +125,14 @@ module.exports.getEmailCode = function (req, res) {
   if (req.body.email) {
     let email = req.body.email
     req.session.code = code
-    sendMail(email, code, '用户', function(err, message) {
+    sendMail(email, code, '用户', function(err) {
+      console.log(err);
       if (err) {
+
         res.send({
           status: 1,
           message: '发送失败'
-        });
+        })
       } else {
         res.send({
           status: 0,
@@ -146,12 +149,13 @@ module.exports.getEmailCode = function (req, res) {
         })
       } else {
         req.session.code = code
-        sendMail(user.email, code, user.name, function(err, message) {
+        sendMail(user.email, code, user.name, function(err) {
           if (err) {
+            debug(err)
             res.send({
               status: 1,
               message: '发送失败'
-            });
+            })
           } else {
             res.send({
               status: 0,
@@ -176,13 +180,13 @@ module.exports.updatePassword = function (req, res) {
         res.send({
           status: 1,
           message: '没有此用户'
-        });
+        })
       } else {
         user.findPasswordByCode(password, passwordConfirmation, function (err, message) {
           if (err) {
-            res.send(err);
+            res.send(err)
           } else {
-            res.send(message);
+            res.send(message)
           }
         })
       }
@@ -248,13 +252,13 @@ module.exports.modifyUser = function (req, res) {
 
   let userId = req.body.id || req.session.user.id
   models.Detail.findOne({uid: userId}).then(function (user) {
-    if (!user) {
+    if (!user || user.read === true) {
       res.send({
         status: 1,
-        message: '没有此用户'
+        message: '没有此用户或已经认证无法修改'
       })
     }
-
+    console.log(req.body);
     user.update({ $set: req.body }, function (err) {
       if (err) {
         res.send({
@@ -395,7 +399,7 @@ module.exports.findUser = function (req, res) {
 // 获取用户详情
 module.exports.getDetail = function (req, res) {
   if (!req.session.user) {
-    req.send({
+    res.send({
       status: 1,
       message: '请先登录'
     })
@@ -409,12 +413,12 @@ module.exports.getDetail = function (req, res) {
     }
   }
   let uid = req.query.uid || req.session.user.id
-  console.log(uid);
+  debug(uid)
   models.Detail.findOne({
     uid: uid
   }).then(function(user) {
-    console.log('2222222222222');
-    console.log(user);
+    debug('2222222222222')
+    debug(user)
     if (!user) {
       res.send({
         status: 1,

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import { Link,browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 class UpdatePassword extends Component {
   constructor () {
@@ -8,7 +8,7 @@ class UpdatePassword extends Component {
     this.state = {
       icon: '',
       display: 'none',
-      warning: '',
+      warning: ''
     }
   }
 
@@ -20,7 +20,7 @@ class UpdatePassword extends Component {
       icon,
       display,
       warning
-    });
+    })
     setTimeout(()=>{
       that.setState({
         display: 'none'
@@ -28,11 +28,11 @@ class UpdatePassword extends Component {
     },1000)
   }
   update () {
-    var username = this.refs.username.value;
-    var password = this.refs.password.value;
+    var username = this.refs.username.value
+    var password = this.refs.password.value
     var passwordConfirmation = this.refs.passwordConfirmation.value
     var code = this.refs.code.value
-    var that = this;
+    var that = this
     axios.post('/v1/api/update_password', {
       code,
       username,
@@ -53,9 +53,9 @@ class UpdatePassword extends Component {
   }
 
   sendEmail () {
-    var that = this;
+    var that = this
     that.change({status:0,message:'正在发送中'}, that)
-    var username = this.refs.username.value;
+    var username = this.refs.username.value
     if (!username) {
       that.change({status:0,message:'请输入用户名'}, that)
     } else {
@@ -67,7 +67,7 @@ class UpdatePassword extends Component {
       })
       .catch(function (response) {
         that.change(response.data, that)
-      });
+      })
     }
   }
 
@@ -135,4 +135,4 @@ class UpdatePassword extends Component {
   }
 }
 
-export default UpdatePassword;
+export default UpdatePassword

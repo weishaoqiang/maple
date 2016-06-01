@@ -36,6 +36,7 @@ class CreateUser extends Component {
     let password = this.refs.password.value;
     let passwordConfirmation = this.refs.passwordConfirmation.value
     let code = this.refs.code.value
+    let role = this.refs.role.value
     let that = this;
     axios.post('/v1/api/signup', {
       username,
@@ -44,6 +45,7 @@ class CreateUser extends Component {
       name,
       password,
       passwordConfirmation,
+      role,
       code
     })
     .then(function (response) {
@@ -112,6 +114,17 @@ class CreateUser extends Component {
               </div>
               <div className="weui_cell_bd weui_cell_primary">
                 <input className="weui_input" type='number' placeholder="手机号码" ref="phone" />
+              </div>
+            </div>
+            <div className='weui_cell'>
+              <div className='weui_cell_hd'>
+                <label className="weui_label">用户身份</label>
+              </div>
+              <div className="weui_cell_bd weui_cell_primary">
+                <select className="weui_select" name="role" ref='role'>
+                    <option value="repairer">维修人员</option>
+                    <option value="staff">管理员</option>
+                </select>
               </div>
             </div>
             <div className='weui_cell'>

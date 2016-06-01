@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
-const validator = require("validator");
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
-const timestamps = require('mongoose-timestamp');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const ObjectId = Schema.ObjectId
+const timestamps = require('mongoose-timestamp')
+const uniqueValidator = require('mongoose-unique-validator')
 
 // 缴费记录
 const checkSchema = new Schema({
@@ -21,15 +20,15 @@ const checkSchema = new Schema({
   sourceUid: { type: ObjectId },
   // 删除标记
   destroyedAt: { type: 'Date' }
-});
+})
 
 //
 // 使用插件
 // -----------------------------------------------------------------------------
-checkSchema.plugin(timestamps);
-checkSchema.plugin(uniqueValidator);
+checkSchema.plugin(timestamps)
+checkSchema.plugin(uniqueValidator)
 
 
-mongoose.model('check', checkSchema);
+mongoose.model('check', checkSchema)
 
-module.exports = mongoose.model('check');
+module.exports = mongoose.model('check')

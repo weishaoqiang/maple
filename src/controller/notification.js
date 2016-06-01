@@ -17,17 +17,30 @@ module.exports.createNotification = function (req, res) {
     })
   }
 
-  var repair;
-
+  var source
+  if (!req.body.message) {
+    res.send({
+      status: 1,
+      message: '请输入内容'
+    })
+    return false;
+  }
   req.body.sourceUid = req.session.user.id
   if (req.body.type === 'repair') {
-    var username = req.session.user.name;
-    repair = new models.Repair({
+    var username = req.session.user.name
+    source = new models.Repair({
       title: `${username}住户的报修`,
       message: req.body.message || '暂无报修的相关描述',
       sourceUid: req.session.user.id
     })
-    req.body.id = repair._id;
+    req.body.id = source._id
+  }
+  if (req.body.type === 'complaint') {
+    source = new models.Complaint({
+      sourceUid: req.session.user.id,
+      title: req.body.title,
+      message: req.body.message || '暂无投诉或建议的相关秒速'
+    })
   }
   models.Notification.notify(req.body, function (err) {
     if (err) {
@@ -36,10 +49,10 @@ module.exports.createNotification = function (req, res) {
         status: 1,
         message: '报修错误..'
       })
-    } else if (repair){
-      repair.save(function (err) {
-        if (err) {
-          debug(`用户报修失败${err}`)
+    } else if (source){
+      source.save(function (error) {
+        if (error) {
+          debug(`用户报修失败${error}`)
           res.send({
             status: 1,
             message: '报修错误...'
@@ -190,7 +203,7 @@ module.exports.updateNotification = function (req, res) {
         message: '删除失败，已经无法删除'
       })
     }
-    var time = new Date();
+    var time = new Date()
     notification.update({$set: {destroyedAt: time}}, function (err) {
       if (err) {
         res.send({

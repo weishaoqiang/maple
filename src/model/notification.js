@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
-const validator = require("validator");
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
-const timestamps = require('mongoose-timestamp');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const ObjectId = Schema.ObjectId
+const timestamps = require('mongoose-timestamp')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const NotificationSchema = new Schema({
   // 推送通知标题
@@ -14,21 +13,21 @@ const NotificationSchema = new Schema({
   read: { type: 'Boolean', default: false },
   // 推送通知关联 ID
   notifiableId: { type: ObjectId },
-  // 推送通知关联 MODEL
-  notifiableType: { type: 'String', required: true, enum: ['activity','repair','amount'] },
+  // 推送类型
+  notifiableType: { type: 'String', required: true, enum: ['activity','repair','amount','complaint'] },
   // 推送通知关联用户
   uid: { type: ObjectId },
   // 原操作用户 sourceUid
   sourceUid: { type: ObjectId },
   // 删除标记
   destroyedAt: { type: 'Date' }
-});
+})
 
 //
 // 使用插件
 // -----------------------------------------------------------------------------
-NotificationSchema.plugin(timestamps);
-NotificationSchema.plugin(uniqueValidator);
+NotificationSchema.plugin(timestamps)
+NotificationSchema.plugin(uniqueValidator)
 
 // 新建通知
 // {
@@ -41,9 +40,9 @@ NotificationSchema.plugin(uniqueValidator);
 //   operator: '操作人',
 // }
 NotificationSchema.statics.notify = function(obj, next) {
-  var Notification = mongoose.model('Notification');
-  var message = obj.message || '';
-  var shouldReturnPromise = typeof next !== 'function';
+  var Notification = mongoose.model('Notification')
+  var message = obj.message || ''
+  var shouldReturnPromise = typeof next !== 'function'
 
   if (message) {
     var notification = new Notification({
@@ -52,25 +51,25 @@ NotificationSchema.statics.notify = function(obj, next) {
       notifiableId: obj.id,
       notifiableType: obj.type,
       uid: obj.uid,
-      sourceUid: obj.sourceUid,
-    });
+      sourceUid: obj.sourceUid
+    })
     if (shouldReturnPromise) {
-      return notification.save();
+      return notification.save()
     } else {
       notification.save(function(err) {
-        if (err) return next(err);
-        next();
-      });
+        if (err) return next(err)
+        next()
+      })
     }
   } else {
     if (shouldReturnPromise) {
-      return Promise.resolve();
+      return Promise.resolve()
     } else {
-      next();
+      next()
     }
   }
-};
+}
 
-mongoose.model('Notification', NotificationSchema);
+mongoose.model('Notification', NotificationSchema)
 
-module.exports = mongoose.model('Notification');
+module.exports = mongoose.model('Notification')

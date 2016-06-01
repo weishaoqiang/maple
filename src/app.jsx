@@ -14,6 +14,8 @@ import createNotification from './component/notification/create'
 import getRepair from './component/repair/index'
 import Notification from './component/notification/index'
 import Check from './component/check/index'
+import Complaint from './component/notification/complaint'
+import getComplaint from './component/complaint/complaint'
 
 import './public/stylesheet/style.css'
 import getCookie from './common/getCookie'
@@ -51,6 +53,8 @@ ReactDOM.render((
         <Route path='/check' component={Check} />
       </Route>
       <Route  path='/notification/create' component={createNotification} />
+      <Route  path='/notification/complaint' component={Complaint} />
+      <Route path='/complaint' component={getComplaint} />
       <Route path='/repair' component={getRepair}></Route>
       <Route path='user_info' component={Detail}></Route>
       <Route path="login" component={Login}></Route>
