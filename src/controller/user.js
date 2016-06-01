@@ -32,27 +32,11 @@ module.exports.signup = function (req, res) {
   let detail = new models.Detail({ uid: user.id })
   user.save((err) => {
     if (err) {
-      if (err.errors.username) {
+      debug(err)
         res.send({
           status: 1,
-          message: err.errors.username.message
+          message: '请输入完整内容'
         })
-      } else if (err.errors.email) {
-        res.send({
-          status: 1,
-          message: err.errors.email.message
-        })
-      } else if (err.errors.phone) {
-        res.send({
-          status: 1,
-          message: err.errors.phone.message
-        })
-      } else if (err.errors.password) {
-        res.send({
-          status: 1,
-          message: err.errors.password.message
-        })
-      }
 
     } else {
       amount.save((err)=>{debug(err)})
