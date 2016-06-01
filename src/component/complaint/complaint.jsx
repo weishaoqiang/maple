@@ -15,7 +15,7 @@ let Item = (params) =>
     <ul className='weui_media_info'>
       <li className='weui_media_info_meta'>标题: { params.title }</li>
       {
-        params.role === 'repairer' && !params.read ? (
+        params.role != 'resident' && !params.read ? (
           <li className='weui_media_info_meta'>
             <a href="javascript:;" onClick={()=>{params.hasHand(params._id)}} className="weui_btn weui_btn_mini weui_btn_primary">按钮</a>
           </li>
