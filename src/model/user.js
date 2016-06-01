@@ -18,6 +18,7 @@ const UserSchema = new Schema({
   email: { type: String, required: '邮箱不能为空', unique: '该邮箱已经被使用' },
   username: { type: String, required: '用户名不能为空', unique: '该用户名已经被使用' },
   name: { type: String }, //显示名称
+  phone: { type: Number },
   password: { type: String, required: '密码不能为空' },
   role: { type: String, default: 'residengt' },
   destroy: { type: Boolean, default: false }
