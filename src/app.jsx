@@ -52,8 +52,9 @@ ReactDOM.render((
         <Route path='/notification' component={Notification} />
         <Route path='/check' component={Check} />
       </Route>
-      <Route  path='/notification/create' component={createNotification} />
-      <Route  path='/notification/complaint' component={Complaint} />
+      <Route path='/notification/create' component={createNotification} />
+      <Route path='/notification/complaint' component={Complaint} />
+      <Route path='/account/user_list' component={Account} />
       <Route path='/complaint' component={getComplaint} />
       <Route path='/repair' component={getRepair}></Route>
       <Route path='user_info' component={Detail}></Route>

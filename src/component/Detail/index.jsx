@@ -16,13 +16,13 @@ let Modify = (props) =>
     </div>
   </div>
 
-  let Item = (props) =>
-    <a className='weui_cell' onClick={props.click} href='javascript:;'>
-      <div className='weui_cell_bd weui_cell_primary'>
-        <p>{props.title}</p>
-      </div>
-      <div className='weui_cell_ft'>{props.content}</div>
-    </a>
+let Item = (props) =>
+  <a className='weui_cell' onClick={props.click} href='javascript:;'>
+    <div className='weui_cell_bd weui_cell_primary'>
+      <p>{props.title}</p>
+    </div>
+    <div className='weui_cell_ft'>{props.content}</div>
+  </a>
 
 class Detail extends Component {
   constructor () {
@@ -66,7 +66,6 @@ class Detail extends Component {
         content
       })
     }
-
   }
 
   handleChange (event) {

@@ -16,7 +16,7 @@ router.post('/delete_user', user.deleteUser)
 router.post('/modify_user', user.modifyUser)
 router.post('/read_user', user.readUser)
 router.post('/delete_user', user.deleteUser)
-router.post('/get_user_list', user.getUserList)
+router.get('/get_user_list', user.getUserList)
 router.post('/find_user', user.findUser)
 router.post('/delete_user', user.deleteUser)
 router.get('/user/getDetail', user.getDetail)
@@ -27,8 +27,10 @@ router.get('/notification', notification.readNotification)
 router.get('/repair', repair.getRepair) // 获取报修
 router.get('/complaint', repair.getComplaint)
 router.put('/complaint', repair.handComplaint)
+router.put('/repair', repair.handRepair)
 
 
 // 资金类相关
 router.get('/check', check.index)
+router.post('/top_up_amount', amount.topUpAmount)
 module.exports = router;

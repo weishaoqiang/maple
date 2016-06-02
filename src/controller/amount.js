@@ -18,32 +18,34 @@ module.exports.topUpAmount = function (req, res) {
 
   let query = models.Amount.findOne({destroyedAt: null})
   query.where('uid').equals(req.body.uid)
-  query.exec().then(function (amount) {
-    if (!amount) {
-      res.send({
+  query.exec().then(function (data) {
+    if (!data) {
+      return res.send({
         status: 1,
         message: '账号不存在'
       })
     }
 
-    let data
+    let opts
     if (req.body.amount) {
-      let amount = req.body.amount
-      data = {
-        amount: amount
+      let amount = Number(req.body.amount)
+      console.log(typeof amount);
+      opts = {
+        amount: amount + data.amount
       }
     } else if (req.body.water) {
-      let water = req.body.water
-      data = {
-        water
+      let water = Number(req.body.water)
+      opts = {
+        water: water + data.water
       }
     } else {
-      let energy = req.body.energy
-      data = {
-        energy
+      let energy = Number(req.body.energy)
+      opts = {
+        energy : energy + data.energy
       }
     }
-    amount.update({$set: data}, function (err) {
+    console.log(opts);
+    data.update({$set: opts}, function (err) {
       if (err) {
         res.send({
           status: 1,

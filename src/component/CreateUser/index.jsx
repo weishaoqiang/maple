@@ -38,8 +38,6 @@ class CreateUser extends Component {
     let code = this.refs.code.value
     let role = this.refs.role.value
     let that = this;
-    console.log('===============================');
-    console.log(role);
     axios.post('/v1/api/signup', {
       username,
       email,

@@ -15,7 +15,7 @@ let Item = (params) =>
     <ul className='weui_media_info'>
       <li className='weui_media_info_meta'>标题: { params.title }</li>
       {
-        params.role != 'resident' && !params.read ? (
+        params.role && params.role != 'resident' && !params.read ? (
           <li className='weui_media_info_meta'>
             <a href="javascript:;" onClick={()=>{params.hasHand(params._id)}} className="weui_btn weui_btn_mini weui_btn_primary">按钮</a>
           </li>
@@ -45,6 +45,7 @@ class getComplaint extends Component {
   getData () {
     let that = this
     axios.get('/v1/api/complaint').then(function (response) {
+      console.log(response.data.message);
       if (response.data.status === 0) {
         that.setState({
           complaints: response.data.message
@@ -92,6 +93,8 @@ class getComplaint extends Component {
     let role = getCookie('role')
     let display = this.state.display
     let that = this
+    console.log('ssssss');
+    console.log(Object.prototype.toString.call(this.state.complaints));
     return (
       <div className='cell' >
         <div className="hd">
@@ -102,7 +105,7 @@ class getComplaint extends Component {
           {
             Object.prototype.toString.call(this.state.complaints) === '[object Array]' ?
               this.state.complaints.map(function (complaint, key) {
-                if (role === 'repairer') {
+                if (role != 'resident') {
                   return <Item {...complaint} role={role} hasHand={that.hasHand.bind(that)} key={key} />
                 }
                 return <Item {...complaint} key={key} />

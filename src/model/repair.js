@@ -9,12 +9,10 @@ const RepairSchema = new Schema({
   title: { type: 'String', default: '' },
   // 推报修主要内容
   message: { type: 'String', required: true, default: '' },
-  // 维修员是否已经开始处理
+  // 维修员是否已经处理
   read: { type: 'Boolean', default: false },
   // 用户地址
   address: { type: 'String' },
-  // 修理员是否已解决
-  finish: { type: 'Boolean', default: false },
   // 接手处理的维修员
   uid: { type: ObjectId, ref: 'User' },
   // 报修的用户 sourceUid

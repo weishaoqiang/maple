@@ -5,10 +5,6 @@ const webpack = require('webpack')
 const debug = require('debug')('Maple')
 const bodyParser = require('body-parser')
 const session = require('express-session')
-// const renderToString = require('react-dom').server
-// const match = require('react-router').match
-// const RoutingContext = require('react-router').RoutingContext
-// const routes = require()
 const RedisStore = require('connect-redis')(session)
 
 const wbpkconfig = require('../webpack/webpack.client.dev.js');
@@ -75,6 +71,6 @@ app.use('*', (req, res, next) => {
   res.render('index');
 })
 
-app.listen(config.base.port,function () {
+app.listen(config.base.port, function () {
   debug('Listen on port %s', config.base.port)
 })

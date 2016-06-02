@@ -1,16 +1,33 @@
 import React,{Component} from 'react'
+import { Link,browserHistory } from 'react-router'
 
 const Item = (props) =>
-  <a href={props.path} >
-    <div className="weui_cell" style={{borderTop:'1px solid #D9D9D9'}}>
-      <div className="weui_cell_hd">
-        <img src='' />
-      </div>
-      <div className="weui_cell_bd weui_cell_primary">
-        <p style={{color: 'rgba(34,95,186,.6)'}}>{props.title}</p>
-      </div>
-    </div>
-  </a>
+  {
+    return props.query ? (
+      <Link to={{ pathname: props.path, query: props.query }} >
+        <div className="weui_cell" style={{borderTop:'1px solid #D9D9D9'}}>
+          <div className="weui_cell_hd">
+            <img src='' />
+          </div>
+          <div className="weui_cell_bd weui_cell_primary">
+            <p style={{color: 'rgba(34,95,186,.6)'}}>{props.title}</p>
+          </div>
+        </div>
+      </Link>
+    ) : (
+      <a href={props.path} >
+        <div className="weui_cell" style={{borderTop:'1px solid #D9D9D9'}}>
+          <div className="weui_cell_hd">
+            <img src='' />
+          </div>
+          <div className="weui_cell_bd weui_cell_primary">
+            <p style={{color: 'rgba(34,95,186,.6)'}}>{props.title}</p>
+          </div>
+        </div>
+      </a>
+    )
+  }
+
 
 class Me extends Component {
   render () {
@@ -28,7 +45,7 @@ class Me extends Component {
             {
               this.props.role === 'resident' ? (
                 <div>
-                  <Item title='我要报修' path='notification/create' />
+                  <Item title='我要报修' path='notification/create' query={{type:'repair',title:'我要报修'}} />
                   <Item title='我的报修' path='repair' />
                   <Item title='我要投诉' path='notification/complaint' />
                   <Item title='我的投诉' path='complaint' />
@@ -37,6 +54,8 @@ class Me extends Component {
                   <div>
                     <Item title='居民报修' path='repair' />
                     <Item title='居民投诉' path='complaint' />
+                    <Item title='创建通知' path='notification/create' query={{type:'activity',title:'创建活动通知'}} />
+                    <Item title='费用中心' path='account/user_list' />
                   </div>
                 )
             }

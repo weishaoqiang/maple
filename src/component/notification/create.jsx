@@ -22,7 +22,7 @@ class createNotification extends Component {
     axios.post('/v1/api/notification', {
       title,
       message,
-      type: 'repair'
+      type: that.props.location.query.type
     }).then(function (response) {
       if (response.data.status === 0) {
         browserHistory.push('/user')
@@ -58,7 +58,7 @@ class createNotification extends Component {
     return (
       <div className='cell' >
         <div className="hd">
-          <h1 className="page_title">创建报修</h1>
+          <h1 className="page_title">{this.props.location.query.title}</h1>
         </div>
         <div className='bd'>
           <div className='weui_cells weui_cells_form'>

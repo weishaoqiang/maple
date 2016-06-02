@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   name: { type: String }, //显示名称
   phone: { type: Number },
   password: { type: String, required: '密码不能为空' },
-  role: { type: String, default: 'residengt' },
+  role: { type: String, default: 'resident' },
   destroy: { type: Boolean, default: false }
 })
 

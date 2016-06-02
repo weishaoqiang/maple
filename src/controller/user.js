@@ -28,8 +28,10 @@ module.exports.signup = function (req, res) {
     req.body.name = req.body.username
   }
   let user = new models.User(req.body)
-  let amount = new models.Amount({ uid: user.id })
-  let detail = new models.Detail({ uid: user.id })
+  if (req.body.role === 'resident') {
+    let amount = new models.Amount({ uid: user.id })
+    let detail = new models.Detail({ uid: user.id })
+  }
   user.save((err) => {
     if (err) {
       debug(err)
@@ -38,9 +40,14 @@ module.exports.signup = function (req, res) {
           message: '请输入完整内容'
         })
 
-    } else {
+    } else if (amount && detail){
       amount.save((err)=>{debug(err)})
       detail.save((err)=>debug(err))
+      res.send({
+        status: 0,
+        message:'创建用户成功'
+      })
+    } else {
       res.send({
         status: 0,
         message:'创建用户成功'
@@ -301,36 +308,23 @@ module.exports.readUser = function (req, res) {
 // 获取用户列表
 module.exports.getUserList = function (req, res) {
   if (!req.session.user) {
-    req.send({
+    return req.send({
       status: 1,
       message: '请先登录'
     })
   }
   if (!roleControll.getUserList.role.includes(req.session.user.role)) {
-    req.send({
+    return req.send({
       status: 1,
       message: '您没有权限'
     })
   }
 
-  let query = models.User.find( { destroy: false } )
-  query.where('role').equals(req.body.role)
-  query.exec().then(function (users) {
-    let length = users.length
-    let data = []
-    for (let i = 0; i < length; i++) {
-      let user = {
-        email: users[i].email,
-        username: users[i].username,
-        phone: user.phone,
-        name: users[i].name,
-        role: users[i].role
-      }
-      data.push(user)
-    }
+  let query = models.Amount.find()
+  query.populate('uid').then(function (users) {
     res.send({
       status: 0,
-      message: data
+      message: users
     })
   })
 }

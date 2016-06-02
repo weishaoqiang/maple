@@ -12,7 +12,7 @@ const AmountSchema = new Schema({
   // 需缴的电费
   energy: { type: 'Number', default: 0 },
   // 关联用户
-  uid: { type: ObjectId },
+  uid: { type: ObjectId, ref: 'User' },
   // 删除标记
   destroyedAt: { type: 'Date' }
 })

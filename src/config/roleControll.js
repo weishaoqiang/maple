@@ -70,6 +70,24 @@ module.exports = {
     description: '获取用户的报修',
     role: ['system', 'staff', 'repairer', 'resident']
   },
+  getComplaint: {
+    method: 'get',
+    name: '获取投诉列表',
+    description: '获取用户投诉列表',
+    role: ['system', 'staff', 'repairer', 'resident']
+  },
+  handComplaint: {
+    method: 'put',
+    name: '处理用户投诉状态',
+    description: '处理用户投诉状态',
+    role: ['system', 'staff', 'repairer']
+  },
+  handRepair: {
+    method: 'put',
+    name: '处理用户报修状态',
+    description: '处理用户报修状态',
+    role: ['system', 'staff']
+  },
 
   // 住户生活相关
   topUpAmount: {
