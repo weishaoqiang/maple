@@ -33,4 +33,6 @@ router.put('/repair', repair.handRepair)
 // 资金类相关
 router.get('/check', check.index)
 router.post('/top_up_amount', amount.topUpAmount)
+router.put('/deduct_amount', amount.deductAmount)
+
 module.exports = router;

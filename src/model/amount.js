@@ -11,6 +11,8 @@ const AmountSchema = new Schema({
   water: { type: 'Number', default: 0 },
   // 需缴的电费
   energy: { type: 'Number', default: 0 },
+  // 需缴的煤气费用
+  gas: { type: 'Number', default: 0 },
   // 关联用户
   uid: { type: ObjectId, ref: 'User' },
   // 删除标记

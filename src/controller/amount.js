@@ -26,25 +26,23 @@ module.exports.topUpAmount = function (req, res) {
       })
     }
 
-    let opts
+    let opts = {}
     if (req.body.amount) {
       let amount = Number(req.body.amount)
-      console.log(typeof amount);
-      opts = {
-        amount: amount + data.amount
-      }
-    } else if (req.body.water) {
-      let water = Number(req.body.water)
-      opts = {
-        water: water + data.water
-      }
-    } else {
-      let energy = Number(req.body.energy)
-      opts = {
-        energy : energy + data.energy
-      }
+      opts.amount = amount + data.amount;
     }
-    console.log(opts);
+    if (req.body.water) {
+      let water = Number(req.body.water)
+      opts.water = water + data.water
+    }
+    if (req.body.energy) {
+      let energy = Number(req.body.energy)
+      opts.energy = energy + data.energy
+    }
+    if (req.body.gas) {
+      let gas = Number(req.body.gas)
+      opts.gas = gas + data.gas
+    }
     data.update({$set: opts}, function (err) {
       if (err) {
         res.send({
@@ -77,27 +75,35 @@ module.exports.deductAmount = function (req, res) {
 
   let query = models.Amount.findOne({destroyedAt: null})
   query.where('uid').equals(req.body.uid)
-  query.exec().then(function (amount) {
-    if (!amount) {
+  query.exec().then(function (data) {
+    if (!data) {
       res.send({
         status: 1,
         message: '账号不存在'
       })
     }
 
-    amount = amount - amount.water - amount.energy
-    amount.update({$set: [{amount}, {water: 0}, {energy: 0}]}, function (err) {
-      if (err) {
-        res.send({
-          status: 1,
-          message: '操作失败，请重试'
-        })
-      }
+    amount = data.amount - data.water - data.energy - data.gas
+    if (amount < 0) {
       res.send({
-        status: 0,
-        message: '操作成功'
+        status: 1,
+        message: '余额不足，请充值'
       })
-    })
+    } else {
+      data
+      .update({$set: {amount, water: 0, energy: 0, gas: 0}}, function (err) {
+        if (err) {
+          res.send({
+            status: 1,
+            message: '操作失败，请重试'
+          })
+        }
+        res.send({
+          status: 0,
+          message: '操作成功'
+        })
+      })
+    }
   })
 }
 
