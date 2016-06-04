@@ -194,7 +194,7 @@ module.exports.deleteUser = function (req, res) {
     })
   }
 
-  models.User.findOne({_id: req.body.id}).then(function (user) {
+  models.User.findOne({_id: req.body.id, destroy: false}).then(function (user) {
     if (!user) {
       res.send({
         status: 1,
